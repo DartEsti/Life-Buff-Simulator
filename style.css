@@ -1,0 +1,262 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+
+    background:#0F172A;
+    color:white;
+    min-height:100vh;
+
+}
+
+header{
+
+    text-align:center;
+    padding:30px;
+
+}
+
+header h1{
+
+    color:#38BDF8;
+    font-size:2.5rem;
+
+}
+
+main{
+
+    width:90%;
+    max-width:1400px;
+    margin:auto;
+
+}
+
+.top{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+
+}
+
+.card{
+
+    background:#1E293B;
+    border-radius:20px;
+    padding:25px;
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.level-card{
+
+    grid-column:span 2;
+
+}
+
+.xp-bar{
+
+    margin:20px 0;
+    width:100%;
+    height:20px;
+    background:#334155;
+    border-radius:20px;
+
+}
+
+.xp-fill{
+
+    width:0%;
+    height:100%;
+    border-radius:20px;
+    background:#22C55E;
+
+}
+
+.calendar{
+
+    margin-top:30px;
+
+}
+
+.tasks{
+
+    margin-top:35px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+.task-card{
+
+    background:#1E293B;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    padding:40px;
+
+    cursor:pointer;
+
+    font-size:3rem;
+
+    transition:.3s;
+
+}
+
+.task-card h3{
+
+    font-size:1.1rem;
+
+    margin-top:15px;
+
+}
+
+.task-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 0 25px #38BDF8;
+
+}
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.65);
+
+}
+
+.modal-content{
+
+    width:450px;
+
+    background:#1E293B;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    animation:popup .3s ease;
+
+}
+
+@keyframes popup{
+
+from{
+
+transform:scale(.8);
+
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.close{
+
+    float:right;
+
+    font-size:32px;
+
+    cursor:pointer;
+
+}
+
+.timer{
+
+    margin:30px;
+
+    font-size:2.4rem;
+
+    letter-spacing:2px;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+}
+
+button{
+
+    flex:1;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-size:1rem;
+
+}
+
+.start{
+
+    background:#22C55E;
+
+}
+
+.pause{
+
+    background:#F59E0B;
+
+}
+
+.reset{
+
+    background:#EF4444;
+
+}
+
+button:hover{
+
+    opacity:.8;
+
+}
