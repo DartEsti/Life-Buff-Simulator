@@ -1,8 +1,13 @@
+/* ===================================
+   LIFE BUFF SIMULATOR
+   Version 0.2
+=================================== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Poppins,sans-serif;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
@@ -13,35 +18,52 @@ body{
 
 }
 
+/* ================= HEADER ================= */
+
 header{
 
     text-align:center;
-    padding:30px;
+    padding:35px 20px;
 
 }
 
 header h1{
 
     color:#38BDF8;
-    font-size:2.5rem;
+    font-size:2.8rem;
+    margin-bottom:8px;
 
 }
+
+header p{
+
+    color:#94A3B8;
+    font-size:1rem;
+
+}
+
+/* ================= MAIN ================= */
 
 main{
 
     width:90%;
     max-width:1400px;
     margin:auto;
+    padding-bottom:60px;
 
 }
+
+/* ================= TOP GRID ================= */
 
 .top{
 
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:20px;
 
 }
+
+/* ================= CARDS ================= */
 
 .card{
 
@@ -49,12 +71,15 @@ main{
     border-radius:20px;
     padding:25px;
     transition:.3s;
+    border:1px solid transparent;
 
 }
 
 .card:hover{
 
     transform:translateY(-6px);
+    border-color:#38BDF8;
+    box-shadow:0 0 20px rgba(56,189,248,.25);
 
 }
 
@@ -64,13 +89,35 @@ main{
 
 }
 
+.card h2{
+
+    margin-top:10px;
+
+}
+
+.card h3{
+
+    color:#CBD5E1;
+    margin-bottom:15px;
+
+}
+
+.card p{
+
+    color:#94A3B8;
+
+}
+
+/* ================= XP BAR ================= */
+
 .xp-bar{
 
-    margin:20px 0;
     width:100%;
-    height:20px;
+    height:18px;
     background:#334155;
     border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
 
 }
 
@@ -78,16 +125,21 @@ main{
 
     width:0%;
     height:100%;
+    background:linear-gradient(90deg,#22C55E,#4ADE80);
     border-radius:20px;
-    background:#22C55E;
+    transition:.5s;
 
 }
+
+/* ================= CALENDAR ================= */
 
 .calendar{
 
     margin-top:30px;
 
 }
+
+/* ================= TASKS ================= */
 
 .tasks{
 
@@ -109,13 +161,31 @@ main{
 
     text-align:center;
 
-    padding:40px;
+    padding:35px 20px;
 
     cursor:pointer;
 
-    font-size:3rem;
-
     transition:.3s;
+
+    border:1px solid transparent;
+
+}
+
+.task-card:hover{
+
+    transform:translateY(-8px) scale(1.02);
+
+    border-color:#38BDF8;
+
+    box-shadow:0 0 30px rgba(56,189,248,.4);
+
+}
+
+.emoji{
+
+    font-size:3.5rem;
+
+    margin-bottom:15px;
 
 }
 
@@ -123,17 +193,11 @@ main{
 
     font-size:1.1rem;
 
-    margin-top:15px;
+    color:white;
 
 }
 
-.task-card:hover{
-
-    transform:translateY(-8px);
-
-    box-shadow:0 0 25px #38BDF8;
-
-}
+/* ================= MODAL ================= */
 
 .modal{
 
@@ -147,43 +211,49 @@ main{
 
     align-items:center;
 
-    background:rgba(0,0,0,.65);
+    background:rgba(0,0,0,.7);
+
+    backdrop-filter:blur(5px);
+
+    z-index:1000;
 
 }
 
 .modal-content{
 
-    width:450px;
+    width:500px;
+
+    max-width:90%;
 
     background:#1E293B;
 
-    padding:35px;
-
     border-radius:20px;
 
-    text-align:center;
+    padding:30px;
 
     animation:popup .3s ease;
+
+    border:1px solid rgba(255,255,255,.08);
 
 }
 
 @keyframes popup{
 
-from{
+    from{
 
-transform:scale(.8);
+        transform:scale(.9);
 
-opacity:0;
+        opacity:0;
 
-}
+    }
 
-to{
+    to{
 
-transform:scale(1);
+        transform:scale(1);
 
-opacity:1;
+        opacity:1;
 
-}
+    }
 
 }
 
@@ -191,29 +261,93 @@ opacity:1;
 
     float:right;
 
-    font-size:32px;
+    font-size:30px;
 
     cursor:pointer;
+
+    color:#94A3B8;
+
+    transition:.3s;
+
+}
+
+.close:hover{
+
+    color:white;
+
+}
+
+/* ================= POPUP ================= */
+
+.modal-content h2{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.task-stats{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+}
+
+.stat-box{
+
+    background:#0F172A;
+
+    border-radius:15px;
+
+    padding:18px;
+
+    text-align:center;
+
+}
+
+.stat-box h4{
+
+    color:#94A3B8;
+
+    font-size:.9rem;
+
+    margin-bottom:10px;
+
+}
+
+.stat-box p{
+
+    font-size:1.1rem;
+
+    color:white;
 
 }
 
 .timer{
 
-    margin:30px;
+    font-size:1.6rem;
 
-    font-size:2.4rem;
+    font-weight:600;
 
     letter-spacing:2px;
 
+    color:#38BDF8;
+
 }
+
+/* ================= BUTTONS ================= */
 
 .buttons{
 
     display:flex;
 
-    justify-content:space-between;
-
     gap:15px;
+
+    margin-top:25px;
 
 }
 
@@ -223,17 +357,17 @@ button{
 
     border:none;
 
-    padding:15px;
-
     border-radius:12px;
 
-    color:white;
+    padding:15px;
 
     cursor:pointer;
 
-    transition:.3s;
+    color:white;
 
     font-size:1rem;
+
+    transition:.3s;
 
 }
 
@@ -243,20 +377,44 @@ button{
 
 }
 
+.start:hover{
+
+    background:#16A34A;
+
+}
+
 .pause{
 
     background:#F59E0B;
 
 }
 
-.reset{
+.pause:hover{
 
-    background:#EF4444;
+    background:#D97706;
 
 }
 
-button:hover{
+/* ================= RESPONSIVE ================= */
 
-    opacity:.8;
+@media(max-width:768px){
+
+.level-card{
+
+grid-column:span 1;
+
+}
+
+.task-stats{
+
+grid-template-columns:1fr;
+
+}
+
+.buttons{
+
+flex-direction:column;
+
+}
 
 }

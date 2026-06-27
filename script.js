@@ -1,9 +1,9 @@
-// ================================
-// LIFE BUFF SIMULATOR - PHASE 2
-// script.js
-// ================================
+// ========================================
+// LIFE BUFF SIMULATOR
+// Phase 2 - Part 2
+// ========================================
 
-// ---------- Elements ----------
+// ---------- ELEMENTS ----------
 
 const modal = document.getElementById("taskModal");
 const taskTitle = document.getElementById("taskTitle");
@@ -13,12 +13,11 @@ const timerDisplay = document.getElementById("timer");
 
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
-const resetBtn = document.getElementById("resetBtn");
 
 const closeBtn = document.querySelector(".close");
 const cards = document.querySelectorAll(".task-card");
 
-// ---------- XP Rates ----------
+// ---------- XP RATES ----------
 
 const xpRates = {
     "Household Maintenance": 15,
@@ -28,7 +27,7 @@ const xpRates = {
     "Personal Care": 10
 };
 
-// ---------- Task Data ----------
+// ---------- TASK DATA ----------
 
 const tasks = {
 
@@ -59,12 +58,13 @@ const tasks = {
 
 };
 
-// ---------- Variables ----------
+// ---------- VARIABLES ----------
 
 let currentTask = null;
+let activeTask = null;
 let timer = null;
 
-// ---------- Task Cards ----------
+// ---------- TASK CARDS ----------
 
 cards.forEach(card => {
 
@@ -80,7 +80,7 @@ cards.forEach(card => {
 
 });
 
-// ---------- Display Task ----------
+// ---------- DISPLAY TASK ----------
 
 function showTask() {
 
@@ -96,44 +96,50 @@ function showTask() {
 
 }
 
-// ---------- Timer ----------
+// ---------- TIMER DISPLAY ----------
 
 function updateTimer() {
 
-    const totalSeconds = tasks[currentTask].seconds;
+    const total = tasks[currentTask].seconds;
 
-    const hours = Math.floor(totalSeconds / 3600);
-
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-
-    const seconds = totalSeconds % 60;
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
 
     timerDisplay.textContent =
         `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
 }
 
-// ---------- Start ----------
+// ---------- START TIMER ----------
 
 startBtn.addEventListener("click", () => {
 
     if (currentTask === null) return;
 
-    if (timer !== null) return;
+    // Stop previous task if another one is running
+    if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+    }
+
+    activeTask = currentTask;
 
     timer = setInterval(() => {
 
-        tasks[currentTask].seconds++;
+        tasks[activeTask].seconds++;
 
-        tasks[currentTask].xp += xpRates[currentTask] / 3600;
+        tasks[activeTask].xp += xpRates[activeTask] / 3600;
 
-        showTask();
+        if (currentTask === activeTask) {
+            showTask();
+        }
 
     }, 1000);
 
 });
 
-// ---------- Pause ----------
+// ---------- PAUSE TIMER ----------
 
 pauseBtn.addEventListener("click", () => {
 
@@ -141,33 +147,19 @@ pauseBtn.addEventListener("click", () => {
 
     timer = null;
 
-});
-
-// ---------- Reset ----------
-
-resetBtn.addEventListener("click", () => {
-
-    if (currentTask === null) return;
-
-    clearInterval(timer);
-
-    timer = null;
-
-    tasks[currentTask].seconds = 0;
-
-    tasks[currentTask].xp = 0;
-
-    showTask();
+    activeTask = null;
 
 });
 
-// ---------- Close Modal ----------
+// ---------- CLOSE MODAL ----------
 
 closeBtn.addEventListener("click", () => {
 
     modal.style.display = "none";
 
 });
+
+// ---------- CLICK OUTSIDE MODAL ----------
 
 window.addEventListener("click", (event) => {
 

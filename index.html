@@ -17,21 +17,35 @@
 
 <body>
 
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
+
     <header>
 
         <h1>🎮 Life Buff Simulator</h1>
 
+        <p>Level Up Your Real Life</p>
+
     </header>
+
+    <!-- ========================= -->
+    <!-- MAIN -->
+    <!-- ========================= -->
 
     <main>
 
+        <!-- TOP DASHBOARD -->
+
         <section class="top">
 
-            <!-- LEVEL CARD -->
+            <!-- LEVEL -->
 
             <div class="card level-card">
 
-                <h2 id="levelDisplay">Level 1</h2>
+                <h2 id="levelDisplay">
+                    ⭐ Level 1
+                </h2>
 
                 <div class="xp-bar">
 
@@ -39,21 +53,35 @@
 
                 </div>
 
-                <p id="totalXP">0 / 1000 XP</p>
+                <p id="totalXP">
+
+                    0 / 1000 XP
+
+                </p>
 
             </div>
 
-            <!-- CLOCK CARD -->
+            <!-- CLOCK -->
 
             <div class="card">
 
-                <h3>Today's Session</h3>
+                <h3>🕒 Today's Session</h3>
 
                 <p>Clock In</p>
-                <h2 id="clockIn">--:--</h2>
+
+                <h2 id="clockIn">
+
+                    --:--
+
+                </h2>
 
                 <p>Clock Out</p>
-                <h2 id="clockOut">--:--</h2>
+
+                <h2 id="clockOut">
+
+                    --:--
+
+                </h2>
 
             </div>
 
@@ -61,9 +89,13 @@
 
             <div class="card">
 
-                <h3>🔥 Streak</h3>
+                <h3>🔥 Daily Streak</h3>
 
-                <h1 id="streakDisplay">0 Days</h1>
+                <h1 id="streakDisplay">
+
+                    0 Days
+
+                </h1>
 
             </div>
 
@@ -71,15 +103,23 @@
 
             <div class="card">
 
-                <h3>Today's Productivity</h3>
+                <h3>📊 Today's Productivity</h3>
 
-                <p>Worked</p>
+                <p>Total Productive Time</p>
 
-                <h2 id="workedHours">0 Hours</h2>
+                <h2 id="workedHours">
 
-                <p>Free Time Left</p>
+                    0 Hours
 
-                <h2 id="freeTime">16 Hours</h2>
+                </h2>
+
+                <p>Free Time Remaining</p>
+
+                <h2 id="freeTime">
+
+                    16 Hours
+
+                </h2>
 
             </div>
 
@@ -89,9 +129,13 @@
 
         <section class="calendar card">
 
-            <h2>Calendar</h2>
+            <h2>📅 Calendar</h2>
 
-            <p>(Coming in Phase 3)</p>
+            <p>
+
+                Coming in Phase 3
+
+            </p>
 
         </section>
 
@@ -101,7 +145,7 @@
 
             <div class="task-card" data-task="Household Maintenance">
 
-                🏠
+                <div class="emoji">🏠</div>
 
                 <h3>Household Maintenance</h3>
 
@@ -109,7 +153,7 @@
 
             <div class="task-card" data-task="Exercise">
 
-                💪
+                <div class="emoji">💪</div>
 
                 <h3>Exercise</h3>
 
@@ -117,7 +161,7 @@
 
             <div class="task-card" data-task="Study">
 
-                📚
+                <div class="emoji">📚</div>
 
                 <h3>Study</h3>
 
@@ -125,7 +169,7 @@
 
             <div class="task-card" data-task="Work">
 
-                💼
+                <div class="emoji">💼</div>
 
                 <h3>Work</h3>
 
@@ -133,7 +177,7 @@
 
             <div class="task-card" data-task="Personal Care">
 
-                🛁
+                <div class="emoji">🛁</div>
 
                 <h3>Personal Care</h3>
 
@@ -143,23 +187,91 @@
 
     </main>
 
-    <!-- TASK MODAL -->
+    <!-- ========================= -->
+    <!-- TASK POPUP -->
+    <!-- ========================= -->
 
     <div class="modal" id="taskModal">
 
         <div class="modal-content">
 
-            <span class="close">&times;</span>
+            <span class="close">
 
-            <h2 id="taskTitle">Exercise</h2>
+                &times;
 
-            <h3 id="taskXP">0 XP</h3>
+            </span>
 
-            <h3 id="taskHours">0 Hours</h3>
+            <h2 id="taskTitle">
 
-            <div class="timer" id="timer">
+                Exercise
 
-                00:00:00
+            </h2>
+
+            <div class="task-stats">
+
+                <div class="stat-box">
+
+                    <h4>
+
+                        ⭐ Today's XP
+
+                    </h4>
+
+                    <p id="taskXP">
+
+                        0 XP
+
+                    </p>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <h4>
+
+                        ⏱ Today's Time
+
+                    </h4>
+
+                    <p id="taskHours">
+
+                        0 Hours
+
+                    </p>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <h4>
+
+                        ⌛ Live Timer
+
+                    </h4>
+
+                    <div class="timer" id="timer">
+
+                        00:00:00
+
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <h4>
+
+                        ⚡ XP Rate
+
+                    </h4>
+
+                    <p id="xpRate">
+
+                        0 XP / Hour
+
+                    </p>
+
+                </div>
 
             </div>
 
@@ -167,19 +279,13 @@
 
                 <button class="start" id="startBtn">
 
-                    Start
+                    ▶ Start
 
                 </button>
 
                 <button class="pause" id="pauseBtn">
 
-                    Pause
-
-                </button>
-
-                <button class="reset" id="resetBtn">
-
-                    Reset
+                    ⏸ Pause
 
                 </button>
 
