@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -9,154 +10,187 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
 </head>
 
 <body>
 
-<header>
+    <header>
 
-    <h1>🎮 Life Buff Simulator</h1>
+        <h1>🎮 Life Buff Simulator</h1>
 
-</header>
+    </header>
 
-<main>
+    <main>
 
-    <section class="top">
+        <section class="top">
 
-        <div class="card level-card">
+            <!-- LEVEL CARD -->
 
-            <h2>Level 1</h2>
+            <div class="card level-card">
 
-            <div class="xp-bar">
+                <h2 id="levelDisplay">Level 1</h2>
 
-                <div class="xp-fill"></div>
+                <div class="xp-bar">
+
+                    <div class="xp-fill" id="xpFill"></div>
+
+                </div>
+
+                <p id="totalXP">0 / 1000 XP</p>
 
             </div>
 
-            <p>0 / 1000 XP</p>
+            <!-- CLOCK CARD -->
 
-        </div>
+            <div class="card">
 
-        <div class="card">
+                <h3>Today's Session</h3>
 
-            <h3>Today's Session</h3>
+                <p>Clock In</p>
+                <h2 id="clockIn">--:--</h2>
 
-            <p>Clock In</p>
-            <h2>--:--</h2>
+                <p>Clock Out</p>
+                <h2 id="clockOut">--:--</h2>
 
-            <p>Clock Out</p>
-            <h2>--:--</h2>
+            </div>
 
-        </div>
+            <!-- STREAK -->
 
-        <div class="card">
+            <div class="card">
 
-            <h3>🔥 Streak</h3>
+                <h3>🔥 Streak</h3>
 
-            <h1>0 Days</h1>
+                <h1 id="streakDisplay">0 Days</h1>
 
-        </div>
+            </div>
 
-        <div class="card">
+            <!-- PRODUCTIVITY -->
 
-            <h3>Today's Productivity</h3>
+            <div class="card">
 
-            <p>Worked</p>
+                <h3>Today's Productivity</h3>
 
-            <h2>0 Hours</h2>
+                <p>Worked</p>
 
-            <p>Free Time Left</p>
+                <h2 id="workedHours">0 Hours</h2>
 
-            <h2>16 Hours</h2>
+                <p>Free Time Left</p>
 
-        </div>
+                <h2 id="freeTime">16 Hours</h2>
 
-    </section>
+            </div>
 
-    <section class="calendar card">
+        </section>
 
-        <h2>Calendar</h2>
+        <!-- CALENDAR -->
 
-        <p>(Calendar Coming in Phase 2)</p>
+        <section class="calendar card">
 
-    </section>
+            <h2>Calendar</h2>
 
-    <section class="tasks">
+            <p>(Coming in Phase 3)</p>
 
-        <div class="task-card" data-task="Household Maintenance">
-            🏠
-            <h3>Household</h3>
-        </div>
+        </section>
 
-        <div class="task-card" data-task="Exercise">
-            💪
-            <h3>Exercise</h3>
-        </div>
+        <!-- TASKS -->
 
-        <div class="task-card" data-task="Study">
-            📚
-            <h3>Study</h3>
-        </div>
+        <section class="tasks">
 
-        <div class="task-card" data-task="Work">
-            💼
-            <h3>Work</h3>
-        </div>
+            <div class="task-card" data-task="Household Maintenance">
 
-        <div class="task-card" data-task="Personal Care">
-            🛁
-            <h3>Personal Care</h3>
-        </div>
+                🏠
 
-    </section>
+                <h3>Household Maintenance</h3>
 
-</main>
+            </div>
 
-<div class="modal" id="taskModal">
+            <div class="task-card" data-task="Exercise">
 
-    <div class="modal-content">
+                💪
 
-        <span class="close">&times;</span>
+                <h3>Exercise</h3>
 
-<h2 id="taskTitle">Exercise</h2>
+            </div>
 
-<h3 id="taskXP">0 XP</h3>
+            <div class="task-card" data-task="Study">
 
-<h3 id="taskHours">0 Hours</h3>
+                📚
 
-<div class="timer" id="timer">
+                <h3>Study</h3>
 
-00:00:00
+            </div>
 
-</div>
+            <div class="task-card" data-task="Work">
 
-<button class="start" id="startBtn">
+                💼
 
-Start
+                <h3>Work</h3>
 
-</button>
+            </div>
 
-<button class="pause" id="pauseBtn">
+            <div class="task-card" data-task="Personal Care">
 
-Pause
+                🛁
 
-</button>
+                <h3>Personal Care</h3>
 
-<button class="reset" id="resetBtn">
+            </div>
 
-Reset
+        </section>
 
-</button>
+    </main>
+
+    <!-- TASK MODAL -->
+
+    <div class="modal" id="taskModal">
+
+        <div class="modal-content">
+
+            <span class="close">&times;</span>
+
+            <h2 id="taskTitle">Exercise</h2>
+
+            <h3 id="taskXP">0 XP</h3>
+
+            <h3 id="taskHours">0 Hours</h3>
+
+            <div class="timer" id="timer">
+
+                00:00:00
+
+            </div>
+
+            <div class="buttons">
+
+                <button class="start" id="startBtn">
+
+                    Start
+
+                </button>
+
+                <button class="pause" id="pauseBtn">
+
+                    Pause
+
+                </button>
+
+                <button class="reset" id="resetBtn">
+
+                    Reset
+
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
