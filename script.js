@@ -412,7 +412,7 @@ updateLevelUI();
 // PLAYER SESSION
 // ===========================
 let isClockedIn = false;
-
+console.log("Clock In System Loaded");
 function getCurrentTime() {
 
     return new Date().toLocaleTimeString([], {
@@ -450,6 +450,14 @@ clockOutBtn.addEventListener("click", () => {
     pauseTask();
 
 });
+
+console.log("Clock In listener attached!");
+
+clockInBtn.onclick = () => {
+
+    alert("Clock In button works!");
+
+};
 
 // ===========================
 // FUTURE FEATURES
