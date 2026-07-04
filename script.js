@@ -27,6 +27,16 @@ const totalXPDisplay = document.getElementById("totalXP");
 const xpFill = document.getElementById("xpFill");
 
 // ===========================
+// SESSION ELEMENTS
+// ===========================
+
+const clockInDisplay = document.getElementById("clockIn");
+const clockOutDisplay = document.getElementById("clockOut");
+
+const clockInBtn = document.getElementById("clockInBtn");
+const clockOutBtn = document.getElementById("clockOutBtn");
+
+// ===========================
 // GAME SETTINGS
 // ===========================
 
@@ -259,6 +269,14 @@ function refreshCurrentTask() {
 
 function startTask() {
 
+    if (!isClockedIn) {
+
+        alert("🕒 Please Clock In before starting a task.");
+
+        return;
+
+    }
+
     if (currentTask === null) return;
 
     // Pause previous timer
@@ -390,6 +408,48 @@ window.addEventListener("click", (event) => {
 // ===========================
 
 updateLevelUI();
+// ===========================
+// PLAYER SESSION
+// ===========================
+let isClockedIn = false;
+
+function getCurrentTime() {
+
+    return new Date().toLocaleTimeString([], {
+
+        hour: "2-digit",
+
+        minute: "2-digit"
+
+    });
+
+}
+
+clockInBtn.addEventListener("click", () => {
+
+    isClockedIn = true;
+
+    clockInDisplay.textContent = getCurrentTime();
+
+    clockInBtn.disabled = true;
+
+    clockOutBtn.disabled = false;
+
+});
+
+clockOutBtn.addEventListener("click", () => {
+
+    isClockedIn = false;
+
+    clockOutDisplay.textContent = getCurrentTime();
+
+    clockOutBtn.disabled = true;
+
+    clockInBtn.disabled = false;
+
+    pauseTask();
+
+});
 
 // ===========================
 // FUTURE FEATURES
