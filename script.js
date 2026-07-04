@@ -293,23 +293,26 @@ function startTask() {
 
     game.timer = setInterval(() => {
 
-        const task = game.tasks[game.activeTask];
+    const task = game.tasks[game.activeTask];
 
-        task.seconds++;
+    task.seconds++;
 
-        const gainedXP = xpRates[game.activeTask] / 3600;
+    const gainedXP = xpRates[game.activeTask] / 3600;
 
-        task.xp += gainedXP;
+    task.xp += gainedXP;
 
-        addXP(gainedXP);
+    addXP(gainedXP);
 
-        if (currentTask === game.activeTask) {
+    if (currentTask === game.activeTask) {
 
-            refreshCurrentTask();
+        refreshCurrentTask();
 
-        }
+    }
 
-    }, 1000);
+    // Update the dashboard every second
+    updateProductivity();
+
+}, 1000);
 
 }
 
@@ -328,6 +331,8 @@ function pauseTask() {
     }
 
     game.activeTask = null;
+
+    updateProductivity();
 
 }
 
@@ -449,15 +454,40 @@ clockOutBtn.addEventListener("click", () => {
 
     pauseTask();
 
+    closeModal();
+
+    updateProductivity();
+
 });
 
-console.log("Clock In listener attached!");
+// ===========================
+// PRODUCTIVITY SYSTEM
+// ===========================
 
-clockInBtn.onclick = () => {
+const workedHoursDisplay = document.getElementById("workedHours");
+const freeTimeDisplay = document.getElementById("freeTime");
 
-    alert("Clock In button works!");
+function updateProductivity() {
 
-};
+    let totalSeconds = 0;
+
+    for (const task in game.tasks) {
+
+        totalSeconds += game.tasks[task].seconds;
+
+    }
+
+    const totalHours = totalSeconds / 3600;
+
+    workedHoursDisplay.textContent =
+        totalHours.toFixed(2) + " Hours";
+
+    const freeHours = Math.max(0, 16 - totalHours);
+
+    freeTimeDisplay.textContent =
+        freeHours.toFixed(2) + " Hours";
+
+}   
 
 // ===========================
 // FUTURE FEATURES
