@@ -77,6 +77,8 @@ const game = {
 
     timer: null,
 
+    lastPlayedDate: new Date().toDateString(),
+
     tasks: {
 
         "Household Maintenance": {
@@ -133,7 +135,7 @@ let currentTask = null;
 // LEVEL SYSTEM
 // ===========================
 
-function addXP(amount) {
+function addXP(amount) {}
 
     game.currentXP += amount;
 
@@ -159,7 +161,9 @@ function addXP(amount) {
 
     updateLevelUI();
 
-}
+    checkForNewDay();
+
+    setInterval(checkForNewDay,60000);
 
 // ===========================
 // LEVEL UP
@@ -488,6 +492,54 @@ function updateProductivity() {
         freeHours.toFixed(2) + " Hours";
 
 }   
+
+// ===========================
+// DAILY RESET SYSTEM
+// ===========================
+
+function resetDailyTasks() {
+
+    for (const taskName in game.tasks) {
+
+        game.tasks[taskName].seconds = 0;
+
+        game.tasks[taskName].xp = 0;
+
+    }
+
+    workedHoursDisplay.textContent = "0 Hours";
+
+    freeTimeDisplay.textContent = "16 Hours";
+
+    clockInDisplay.textContent = "--:--";
+
+    clockOutDisplay.textContent = "--:--";
+
+    isClockedIn = false;
+
+    clockInBtn.disabled = false;
+
+    clockOutBtn.disabled = true;
+
+    pauseTask();
+
+}
+
+function checkForNewDay() {
+
+    const today = new Date().toDateString();
+
+    if (today !== game.lastPlayedDate) {
+
+        game.lastPlayedDate = today;
+
+        resetDailyTasks();
+
+        alert("🌅 Welcome to a new day!\n\nYour daily tasks have been refreshed.");
+
+    }
+
+}
 
 // ===========================
 // FUTURE FEATURES
