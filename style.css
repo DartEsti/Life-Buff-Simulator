@@ -1,7 +1,12 @@
-/* ===================================
+/* ==========================================
    LIFE BUFF SIMULATOR
-   Version 0.4
-=================================== */
+   Version 0.6
+   style.css
+========================================== */
+
+/* ==========================================
+   GLOBAL
+========================================== */
 
 *{
     margin:0;
@@ -13,12 +18,14 @@
 body{
 
     background:#0F172A;
-    color:white;
+    color:#FFFFFF;
     min-height:100vh;
 
 }
 
-/* ================= HEADER ================= */
+/* ==========================================
+   HEADER
+========================================== */
 
 header{
 
@@ -29,8 +36,8 @@ header{
 
 header h1{
 
-    color:#38BDF8;
     font-size:2.8rem;
+    color:#38BDF8;
     margin-bottom:8px;
 
 }
@@ -42,7 +49,9 @@ header p{
 
 }
 
-/* ================= MAIN ================= */
+/* ==========================================
+   MAIN
+========================================== */
 
 main{
 
@@ -53,7 +62,9 @@ main{
 
 }
 
-/* ================= TOP GRID ================= */
+/* ==========================================
+   DASHBOARD
+========================================== */
 
 .top{
 
@@ -63,29 +74,29 @@ main{
 
 }
 
-/* ================= CARDS ================= */
+/* ==========================================
+   CARDS
+========================================== */
 
 .card{
 
     background:#1E293B;
     border-radius:20px;
     padding:25px;
-    transition:.3s;
+
     border:1px solid transparent;
+
+    transition:.30s;
 
 }
 
 .card:hover{
 
     transform:translateY(-6px);
+
     border-color:#38BDF8;
-    box-shadow:0 0 20px rgba(56,189,248,.25);
 
-}
-
-.level-card{
-
-    grid-column:span 2;
+    box-shadow:0 0 22px rgba(56,189,248,.22);
 
 }
 
@@ -98,6 +109,7 @@ main{
 .card h3{
 
     color:#CBD5E1;
+
     margin-bottom:15px;
 
 }
@@ -108,15 +120,32 @@ main{
 
 }
 
-/* ================= XP BAR ================= */
+/* ==========================================
+   LEVEL CARD
+========================================== */
+
+.level-card{
+
+    grid-column:span 2;
+
+}
+
+/* ==========================================
+   XP BAR
+========================================== */
 
 .xp-bar{
 
     width:100%;
+
     height:18px;
+
     background:#334155;
+
     border-radius:20px;
+
     overflow:hidden;
+
     margin:20px 0;
 
 }
@@ -124,20 +153,31 @@ main{
 .xp-fill{
 
     width:0%;
+
     height:100%;
-    background:linear-gradient(90deg,#22C55E,#4ADE80);
-    border-radius:20px;
-    transition:.5s;
+
+    background:linear-gradient(
+        90deg,
+        #22C55E,
+        #4ADE80
+    );
+
+    transition:.35s;
 
 }
 
-/* ================= SESSION BUTTONS ================= */
+/* ==========================================
+   SESSION BUTTONS
+========================================== */
 
 .session-buttons{
 
     display:flex;
+
     flex-direction:column;
+
     gap:12px;
+
     margin-top:20px;
 
 }
@@ -146,13 +186,20 @@ main{
 .clock-out-btn{
 
     width:100%;
-    padding:14px;
+
     border:none;
+
     border-radius:12px;
-    color:white;
+
+    padding:14px;
+
     font-size:1rem;
+
     cursor:pointer;
-    transition:.3s;
+
+    color:white;
+
+    transition:.25s;
 
 }
 
@@ -162,9 +209,10 @@ main{
 
 }
 
-.clock-in-btn:hover{
+.clock-in-btn:hover:not(:disabled){
 
     background:#16A34A;
+
     transform:translateY(-2px);
 
 }
@@ -178,23 +226,41 @@ main{
 .clock-out-btn:hover:not(:disabled){
 
     background:#DC2626;
+
     transform:translateY(-2px);
 
 }
 
+.clock-in-btn:disabled,
 .clock-out-btn:disabled{
 
     background:#475569;
-    cursor:not-allowed;
+
     opacity:.6;
+
+    
+ cursor:not-allowed;
 
 }
 
-.clock-in-btn:disabled{
+/* ==========================================
+   GLOBAL BUTTON RESET
+   (Calendar buttons override this later)
+    ========================================== */
 
-    background:#475569;
-    cursor:not-allowed;
-    opacity:.6;
+    button{
+
+      border:none;
+
+    border-radius:12px;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:1rem;
+
+    transition:.25s;
 
 }
 
@@ -202,244 +268,338 @@ main{
    CALENDAR
 ========================================== */
 
-.calendar {
+.calendar{
 
-    margin-top: 35px;
-
-}
-
-.calendar-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 20px;
+    margin-top:35px;
 
 }
 
-.calendar-header h2 {
+/* ---------- Header ---------- */
 
-    color: #38BDF8;
+.calendar-header{
 
-    font-size: 1.5rem;
+    display:flex;
 
-    font-weight: 600;
+    justify-content:space-between;
 
-}
+    align-items:center;
 
-.calendar-header button {
-
-    width: 45px;
-
-    height: 45px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: #334155;
-
-    color: white;
-
-    font-size: 1.1rem;
-
-    cursor: pointer;
-
-    transition: .25s;
+    margin-bottom:25px;
 
 }
 
-.calendar-header button:hover {
+.calendar-header h2{
 
-    background: #38BDF8;
+    color:#38BDF8;
 
-    transform: scale(1.08);
+    font-size:1.6rem;
 
-}
-
-.calendar-weekdays {
-
-    display: grid;
-
-    grid-template-columns: repeat(7, 1fr);
-
-    text-align: center;
-
-    margin-bottom: 12px;
-
-    font-weight: 600;
-
-    color: #94A3B8;
+    font-weight:600;
 
 }
 
-.calendar-grid {
+/* ---------- Month Buttons ---------- */
 
-    display: grid;
+.calendar-header button{
 
-    grid-template-columns: repeat(7, 1fr);
+    width:48px;
 
-    gap: 10px;
+    height:48px;
 
-}
+    padding:0;
 
-.calendar-day {
+    display:flex;
 
-    aspect-ratio: 1;
+    justify-content:center;
 
-    background: #1E293B;
+    align-items:center;
 
-    border-radius: 14px;
+    flex:none;
 
-    display: flex;
+    background:#334155;
 
-    justify-content: center;
+    color:white;
 
-    align-items: center;
+    border:none;
 
-    cursor: pointer;
+    border-radius:12px;
 
-    transition: .25s;
+    font-size:1.2rem;
 
-    font-weight: 600;
+    cursor:pointer;
 
-    user-select: none;
-
-}
-
-.calendar-day:hover {
-
-    transform: translateY(-4px);
-
-    box-shadow: 0 0 12px #38BDF8;
+    transition:.25s;
 
 }
 
-/* Today */
+.calendar-header button:hover{
 
-.calendar-day.today {
+    background:#38BDF8;
 
-    border: 2px solid #38BDF8;
-
-}
-
-/* Completed Day */
-
-.calendar-day.completed {
-
-    background: #22C55E;
-
-    color: white;
+    transform:scale(1.08);
 
 }
 
-/* Missed Day */
+/* ---------- Weekdays ---------- */
 
-.calendar-day.missed {
+.calendar-weekdays{
 
-    background: #475569;
+    display:grid;
 
-}
+    grid-template-columns:repeat(7,minmax(0,1fr));
 
-/* Future Day */
+    gap:10px;
 
-.calendar-day.future {
-
-    opacity: .55;
+    margin-bottom:12px;
 
 }
 
-/* Empty Boxes */
+.calendar-weekdays div{
 
-.calendar-day.empty {
+        text-align:center;
 
-    background: transparent;
+    color:#94A3B8;
 
-    cursor: default;
+    font-weight:600;
 
-    box-shadow: none;
+    font-size:.95rem;
 
 }
-/* ================= TASKS ================= */
+
+/* ---------- Calendar Grid ---------- */
+
+.calendar-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(7,minmax(0,1fr));
+
+    gap:10px;
+
+}
+
+/* ---------- Day Box ---------- */
+
+.calendar-day{
+
+    aspect-ratio:1/1;
+
+    background:#273549;
+
+    border-radius:14px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    transition:.25s;
+
+}
+
+.calendar-day:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 0 15px rgba(56,189,248,.55);
+
+}
+
+/* ---------- Today ---------- */
+
+.calendar-day.today{
+
+    border:2px solid #38BDF8;
+
+}
+
+/* ---------- Completed ---------- */
+
+.calendar-day.completed{
+
+    background:#22C55E;
+
+    color:white;
+
+}
+
+/* ---------- Missed ---------- */
+
+.calendar-day.missed{
+
+    background:#475569;
+
+    color:white;
+
+}
+
+/* ---------- Future ---------- */
+
+.calendar-day.future{
+
+    opacity:.45;
+
+}
+
+/* ---------- Empty ---------- */
+
+.calendar-day.empty{
+
+    background:transparent;
+
+    cursor:default;
+
+    pointer-events:none;
+
+    box-shadow:none;
+
+}
+
+/* ---------- Mobile ---------- */
+
+@media(max-width:700px){
+
+.calendar-header h2{
+
+    font-size:1.2rem;
+
+}
+
+.calendar-weekdays div{
+
+    font-size:.8rem;
+
+}
+
+.calendar-day{
+
+    font-size:.9rem;
+
+}
+}
+/* ==========================================
+   TASKS
+========================================== */
 
 .tasks{
 
     margin-top:35px;
+
     display:grid;
+
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
     gap:20px;
 
 }
 
+/* ==========================================
+   TASK CARD
+========================================== */
+
 .task-card{
 
     background:#1E293B;
-    border-radius:20px;
-    text-align:center;
-    padding:35px 20px;
-    cursor:pointer;
-    transition:.3s;
+
     border:1px solid transparent;
+
+    border-radius:20px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.30s;
 
 }
 
 .task-card:hover{
 
     transform:translateY(-8px) scale(1.02);
+
     border-color:#38BDF8;
-    box-shadow:0 0 30px rgba(56,189,248,.4);
+
+    box-shadow:0 0 28px rgba(56,189,248,.40);
 
 }
 
-.emoji{
+.task-card .emoji{
 
     font-size:3.5rem;
+
     margin-bottom:15px;
 
 }
 
 .task-card h3{
 
-    font-size:1.1rem;
-    color:white;
+color:white;
+
+ font-size:1.1rem;
 
 }
 
-/* ================= MODAL ================= */
+/* ==========================================
+   MODAL
+========================================== */
 
 .modal{
 
     position:fixed;
+
     inset:0;
+
     display:none;
+
     justify-content:center;
+
     align-items:center;
-    background:rgba(0,0,0,.7);
+
+    background:rgba(0,0,0,.70);
+
     backdrop-filter:blur(5px);
-    z-index:1000;
+
+    z-index:999;
 
 }
 
 .modal-content{
 
-    width:500px;
+    width:520px;
+
     max-width:90%;
+
     background:#1E293B;
+
     border-radius:20px;
-    padding:30px;
-    animation:popup .3s ease;
+
     border:1px solid rgba(255,255,255,.08);
 
+    padding:30px;
+
+    animation:popup .30s ease;
+
 }
+
+/* ==========================================
+   POPUP ANIMATION
+========================================== */
 
 @keyframes popup{
 
     from{
 
-        transform:scale(.9);
+        transform:scale(.90);
+
         opacity:0;
 
     }
@@ -447,19 +607,28 @@ main{
     to{
 
         transform:scale(1);
+
         opacity:1;
 
     }
 
 }
 
+/* ==========================================
+   CLOSE BUTTON
+========================================== */
+
 .close{
 
     float:right;
-    font-size:30px;
-    cursor:pointer;
+
+    font-size:32px;
+
     color:#94A3B8;
-    transition:.3s;
+
+    cursor:pointer;
+
+    transition:.25s;
 
 }
 
@@ -469,19 +638,28 @@ main{
 
 }
 
-/* ================= POPUP ================= */
+/* ==========================================
+   POPUP TITLE
+========================================== */
 
 .modal-content h2{
 
     text-align:center;
+
     margin-bottom:25px;
 
 }
 
+/* ==========================================
+   TASK STATS
+========================================== */
+
 .task-stats{
 
     display:grid;
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:repeat(2,1fr);
+
     gap:15px;
 
 }
@@ -489,8 +667,11 @@ main{
 .stat-box{
 
     background:#0F172A;
+
     border-radius:15px;
+
     padding:18px;
+
     text-align:center;
 
 }
@@ -498,49 +679,74 @@ main{
 .stat-box h4{
 
     color:#94A3B8;
-    font-size:.9rem;
+
     margin-bottom:10px;
+
+    font-size:.9rem;
 
 }
 
 .stat-box p{
 
-    font-size:1.1rem;
-    color:white;
+color:white;
+
+font-size:1.1rem;
 
 }
+
+/* ==========================================
+   TIMER
+========================================== */
 
 .timer{
 
-    font-size:1.6rem;
-    font-weight:600;
-    letter-spacing:2px;
+    font-size:1.7rem;
+
     color:#38BDF8;
+
+    font-weight:600;
+
+        letter-spacing:2px;
 
 }
 
-/* ================= POPUP BUTTONS ================= */
+/* ==========================================
+   TASK BUTTONS
+========================================== */
 
 .buttons{
 
     display:flex;
+
     gap:15px;
+
     margin-top:25px;
 
 }
 
-button{
+.buttons button{
 
     flex:1;
-    border:none;
-    border-radius:12px;
+
     padding:15px;
-    cursor:pointer;
+
+    border:none;
+
+    border-radius:12px;
+
     color:white;
+
     font-size:1rem;
-    transition:.3s;
+
+    cursor:pointer;
+
+    transition:.25s;
 
 }
+
+/* ==========================================
+   START BUTTON
+========================================== */
 
 .start{
 
@@ -554,6 +760,10 @@ button{
 
 }
 
+/* ==========================================
+   PAUSE BUTTON
+========================================== */
+
 .pause{
 
     background:#F59E0B;
@@ -564,29 +774,215 @@ button{
 
     background:#D97706;
 
-}
+    }
 
-/* ================= RESPONSIVE ================= */
+    /* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
 
-@media(max-width:768px){
+@media (max-width:1024px){
 
-.level-card{
+    .level-card{
 
-grid-column:span 1;
+        grid-column:span 1;
 
-}
-
-.task-stats{
-
-grid-template-columns:1fr;
+    }
 
 }
 
-.buttons{
+@media (max-width:768px){
 
-flex-direction:column;
+    header h1{
+
+        font-size:2.2rem;
+
+    }
+
+    header p{
+
+        font-size:.95rem;
+
+    }
+
+    .top{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .tasks{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .task-stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .buttons{
+
+        flex-direction:column;
+
+    }
+
+    .calendar-header h2{
+
+        font-size:1.2rem;
+
+    }
+
+    .calendar-header button{
+
+        width:42px;
+
+        height:42px;
+
+    }
+
+    .calendar-weekdays div{
+
+        font-size:.8rem;
+
+    }
+
+    .calendar-day{
+
+        font-size:.85rem;
+
+    }
 
 }
 
+@media (max-width:480px){
+
+    body{
+
+        font-size:.95rem;
+
+    }
+
+    header{
+
+        padding:25px 15px;
+
+    }
+
+    header h1{
+
+        font-size:1.8rem;
+
+    }
+
+    main{
+
+        width:95%;
+
+    }
+
+    .card{
+
+        padding:20px;
+
+    }
+
+    .modal-content{
+
+        padding:22px;
+
+    }
+
+    .timer{
+
+        font-size:1.35rem;
+
+    }
+
 }
 
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#0F172A;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#334155;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#38BDF8;
+
+}
+
+/* ==========================================
+   TEXT SELECTION
+========================================== */
+
+::selection{
+
+    background:#38BDF8;
+
+    color:white;
+
+}
+
+/* ==========================================
+   SMOOTH ANIMATIONS
+========================================== */
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+/* ==========================================
+   FUTURE PLACEHOLDERS
+   (Version 0.7+)
+========================================== */
+
+/*
+
+Player Profile
+
+Player Rank
+
+Achievements
+
+Statistics
+
+Inventory
+
+Badges
+
+Settings
+
+Themes
+
+Notifications
+
+Leaderboard
+
+*/
+
+/* ==========================================
+   END OF FILE
+========================================== */
