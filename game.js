@@ -1,3 +1,10 @@
+// ===========================================
+// LIFE BUFF SIMULATOR
+// Version 0.5
+// game.js
+// Core Game Logic
+// ===========================================
+
 // ===========================
 // GAME SETTINGS
 // ===========================
@@ -5,7 +12,7 @@
 const MAX_LEVEL = 150;
 const XP_PER_LEVEL = 1000;
 
-// XP gained every hour
+// XP gained per hour
 
 const xpRates = {
 
@@ -39,7 +46,7 @@ const game = {
 
     timer: null,
 
-    lastPlayedDate: new Date().toDateString(),
+    lastResetDate: null,
 
     tasks: {
 
@@ -88,13 +95,13 @@ const game = {
 };
 
 // ===========================
-// CURRENTLY OPEN TASK
+// CURRENT TASK
 // ===========================
 
 let currentTask = null;
 
 // ===========================
-// LEVEL SYSTEM
+// ADD XP
 // ===========================
 
 function addXP(amount) {
@@ -138,108 +145,81 @@ function levelUp() {
 }
 
 // ===========================
-// DAILY RESET SYSTEM
+// DAILY RESET
 // ===========================
 
 function resetDailyTasks() {
 
-    for (const taskName in game.tasks) {
+    for (const task in game.tasks) {
 
-        game.tasks[taskName].seconds = 0;
+        game.tasks[task].seconds = 0;
 
-        game.tasks[taskName].xp = 0;
+        game.tasks[task].xp = 0;
 
     }
 
-    workedHoursDisplay.textContent = "0 Hours";
+    game.activeTask = null;
 
-    freeTimeDisplay.textContent = "16 Hours";
+    if (typeof pauseTask === "function") {
 
-    clockInDisplay.textContent = "--:--";
+        pauseTask();
 
-    clockOutDisplay.textContent = "--:--";
+    }
 
-    isClockedIn = false;
+    if (typeof updateProductivity === "function") {
 
-    clockInBtn.disabled = false;
+        updateProductivity();
 
-    clockOutBtn.disabled = true;
+    }
 
-    pauseTask();
+    game.lastResetDate = new Date().toDateString();
 
     saveGame();
 
 }
 
+// ===========================
+// CHECK FOR NEW DAY
+// ===========================
+
 function checkForNewDay() {
 
     const today = new Date().toDateString();
 
-    if (today !== game.lastPlayedDate) {
+    if (game.lastResetDate === null) {
 
-        game.lastPlayedDate = today;
+        game.lastResetDate = today;
+
+        saveGame();
+
+        return;
+
+    }
+
+    if (today !== game.lastResetDate) {
 
         resetDailyTasks();
-
-        alert("🌅 Welcome to a new day!\n\nYour daily tasks have been refreshed.");
-
+        
     }
 
 }
 
 // ===========================
-// SAVE GAME
+// FORMAT TIME
 // ===========================
 
-function saveGame() {
+function formatTime(totalSeconds) {
 
-    localStorage.setItem(
-        "lifeBuffSave",
-        JSON.stringify(game)
-    );
+    const hours = Math.floor(totalSeconds / 3600);
+
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+
+    const seconds = totalSeconds % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
 }
 
-// ===========================
-// LOAD GAME
-// ===========================
-
-function loadGame() {
-
-    const savedGame = localStorage.getItem("lifeBuffSave");
-
-    if (!savedGame) return;
-
-    try {
-
-        const loaded = JSON.parse(savedGame);
-
-        Object.assign(game, loaded);
-
-        updateLevelUI();
-
-        updateProductivity();
-
-        if (loaded.clockIn) {
-
-            clockInDisplay.textContent = loaded.clockIn;
-
-        }
-
-        if (loaded.clockOut) {
-
-            clockOutDisplay.textContent = loaded.clockOut;
-
-        }
-
-    }
-
-    catch(error) {
-
-        console.error("Save file corrupted.");
-
-        localStorage.removeItem("lifeBuffSave");
-
-    }
-
-}
+// ===========================================
+// END OF FILE
+// ===========================================
