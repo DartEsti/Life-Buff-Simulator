@@ -135,7 +135,7 @@ let currentTask = null;
 // LEVEL SYSTEM
 // ===========================
 
-function addXP(amount) {}
+function addXP(amount) {
 
     game.currentXP += amount;
 
@@ -161,9 +161,9 @@ function addXP(amount) {}
 
     updateLevelUI();
 
-    checkForNewDay();
+    saveGame();
 
-    setInterval(checkForNewDay,60000);
+}
 
 // ===========================
 // LEVEL UP
@@ -316,6 +316,8 @@ function startTask() {
     // Update the dashboard every second
     updateProductivity();
 
+    saveGame();
+
 }, 1000);
 
 }
@@ -337,6 +339,8 @@ function pauseTask() {
     game.activeTask = null;
 
     updateProductivity();
+    
+    saveGame();
 
 }
 
@@ -416,7 +420,16 @@ window.addEventListener("click", (event) => {
 // INITIALIZE UI
 // ===========================
 
+loadGame();
+
 updateLevelUI();
+
+updateProductivity();
+
+checkForNewDay();
+
+setInterval(checkForNewDay, 60000);
+
 // ===========================
 // PLAYER SESSION
 // ===========================
@@ -444,6 +457,12 @@ clockInBtn.addEventListener("click", () => {
 
     clockOutBtn.disabled = false;
 
+    game.clockIn = getCurrentTime();
+
+    game.clockOut = "--:--";
+
+    saveGame();
+
 });
 
 clockOutBtn.addEventListener("click", () => {
@@ -461,6 +480,10 @@ clockOutBtn.addEventListener("click", () => {
     closeModal();
 
     updateProductivity();
+
+    game.clockOut = getCurrentTime();
+
+    saveGame();
 
 });
 
@@ -523,6 +546,8 @@ function resetDailyTasks() {
 
     pauseTask();
 
+    saveGame();
+
 }
 
 function checkForNewDay() {
@@ -536,6 +561,79 @@ function checkForNewDay() {
         resetDailyTasks();
 
         alert("🌅 Welcome to a new day!\n\nYour daily tasks have been refreshed.");
+
+    }
+
+}
+
+// ===========================
+// SAVE GAME
+// ===========================
+
+function saveGame() {
+
+    localStorage.setItem(
+        "lifeBuffSave",
+        JSON.stringify(game)
+    );
+
+}
+
+// ===========================
+// LOAD GAME
+// ===========================
+
+function loadGame() {
+
+    const savedGame = localStorage.getItem("lifeBuffSave");
+
+    if (!savedGame) return;
+
+    try {
+
+        const loaded = JSON.parse(savedGame);
+
+        Object.assign(game, loaded);
+
+        updateLevelUI();
+
+        updateProductivity();
+
+        if (loaded.clockIn) {
+
+            clockInDisplay.textContent = loaded.clockIn;
+
+        }
+
+        if (loaded.clockOut) {
+
+            clockOutDisplay.textContent = loaded.clockOut;
+
+        }
+
+    }
+
+    catch(error) {
+
+        console.error("Save file corrupted.");
+
+        localStorage.removeItem("lifeBuffSave");
+
+    }
+
+}
+
+// ===========================
+// DEVELOPER TOOLS
+// ===========================
+
+function clearSave() {
+
+    if (confirm("Delete all saved progress?")) {
+
+        localStorage.removeItem("lifeBuffSave");
+
+        location.reload();
 
     }
 
