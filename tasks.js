@@ -99,6 +99,8 @@ function startTask() {
 
         updateStatisticsUI();
 
+        saveStatistics();
+
         saveGame();
 
     }, 1000);
@@ -131,6 +133,8 @@ function pauseTask() {
     updateProductivity();
 
     updateStatisticsUI();
+
+    saveStatistics();
 
     saveGame();
 

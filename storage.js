@@ -107,6 +107,32 @@ function loadGame() {
 
 }
 
+// ===========================================
+// SAVE PLAYER STATISTICS
+// ===========================================
+
+function saveStatistics() {
+
+    localStorage.setItem(
+        "lifeBuffStatistics",
+        JSON.stringify(game.stats)
+    );
+
+}
+
+function loadStatistics() {
+
+    const savedStats =
+        localStorage.getItem("lifeBuffStatistics");
+
+    if (savedStats) {
+
+        game.stats = JSON.parse(savedStats);
+
+    }
+
+}
+
 // ===========================
 // DELETE SAVE
 // ===========================

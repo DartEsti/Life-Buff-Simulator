@@ -16,11 +16,12 @@ window.addEventListener("DOMContentLoaded", () => {
     loadGame();
 
     // Update all UI
+    loadStatistics();
 
     updateLevelUI();
 
     updateProductivity();
-
+    
     updateStatisticsUI();
 
     renderCalendar();
