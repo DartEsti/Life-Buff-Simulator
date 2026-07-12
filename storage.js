@@ -138,5 +138,144 @@ setInterval(() => {
 }, 30000);
 
 // ===========================================
+// DAILY RESET MANAGER
+// ===========================================
+
+function getTodayDate() {
+
+    const today = new Date();
+
+    return today.toISOString().split("T")[0];
+
+}
+
+function getLastPlayedDate() {
+
+    return localStorage.getItem("lastPlayedDate");
+
+}
+
+function saveLastPlayedDate() {
+
+    localStorage.setItem("lastPlayedDate", getTodayDate());
+
+}
+
+// ===========================================
+// RESET DAILY DATA
+// ===========================================
+
+function resetDailyData() {
+
+    // Stop any running timer
+    pauseTask();
+
+    // Reset every task
+    for (const task in game.tasks) {
+
+        game.tasks[task].seconds = 0;
+        game.tasks[task].xp = 0;
+
+    }
+
+    // Reset session
+    isClockedIn = false;
+
+    // Reset Clock In / Out display
+    clockInDisplay.textContent = "--:--";
+    clockOutDisplay.textContent = "--:--";
+
+    // Reset buttons
+    clockInBtn.disabled = false;
+    clockOutBtn.disabled = true;
+
+    // Refresh UI
+    updateProductivity();
+    updateLevelUI();
+
+    // Save yesterday as missed if nothing was completed
+
+    let totalSeconds = 0;
+
+    for (const task in game.tasks) {
+
+    totalSeconds += game.tasks[task].seconds;
+
+    }
+
+    if (totalSeconds > 0) {
+
+    saveDayStatus("completed");
+
+    } else {
+
+    saveDayStatus("missed");
+
+    }
+
+    console.log("✅ Daily progress has been reset.");
+
+}
+
+// ===========================================
+// DAILY CALENDAR STATUS
+// ===========================================
+
+function saveDayStatus(status) {
+
+    const today = getTodayDate();
+
+    let calendarData =
+        JSON.parse(localStorage.getItem("calendarData")) || {};
+
+    calendarData[today] = status;
+
+    localStorage.setItem(
+        "calendarData",
+        JSON.stringify(calendarData)
+    );
+
+}
+
+function getCalendarData() {
+
+    return JSON.parse(
+        localStorage.getItem("calendarData")
+    ) || {};
+
+}   
+
+// ===========================================
+// CHECK FOR NEW DAY
+// ===========================================
+
+function checkForNewDay() {
+
+    const lastPlayed = getLastPlayedDate();
+    const today = getTodayDate();
+
+    // First time opening the website
+    if (lastPlayed === null) {
+
+        saveLastPlayedDate();
+
+        return;
+
+    }
+
+    // A new day has started
+    if (lastPlayed !== today) {
+
+    console.log("🌅 New day detected!");
+
+    resetDailyData();
+
+    saveLastPlayedDate();
+
+}
+
+}
+
+// ===========================================
 // END OF FILE
 // ===========================================

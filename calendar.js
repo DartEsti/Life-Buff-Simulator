@@ -85,6 +85,23 @@ function renderCalendar() {
 
         dayBox.textContent = day;
 
+        const dateKey =
+`${currentYear}-${String(currentMonth + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+const calendarData = getCalendarData();
+
+if (calendarData[dateKey] === "completed") {
+
+    dayBox.classList.add("completed");
+
+}
+
+if (calendarData[dateKey] === "missed") {
+
+    dayBox.classList.add("missed");
+
+}
+
         const today = new Date();
 
         if (
