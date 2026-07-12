@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
     updateLevelUI();
 
     updateProductivity();
-    
+
     updateStatisticsUI();
 
     renderCalendar();
@@ -35,5 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
     setInterval(checkForNewDay, 60000);
 
     console.log("🎮 Life Buff Simulator v0.5 Loaded Successfully");
+
+    console.log(loadDailySummaries());
 
 });

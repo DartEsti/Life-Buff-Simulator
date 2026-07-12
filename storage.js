@@ -5,6 +5,24 @@
 // Save System
 // ===========================================
 
+// ===========================================
+// LOCAL STORAGE KEYS
+// ===========================================
+
+const STORAGE_KEYS = {
+
+    SAVE: "lifeBuffSave",
+
+    STATISTICS: "lifeBuffStatistics",
+
+    DAILY_SUMMARIES: "dailySummaries",
+
+    CALENDAR: "calendarData",
+
+    LAST_PLAYED: "lastPlayedDate"
+
+};
+
 // ===========================
 // SAVE GAME
 // ===========================
@@ -133,6 +151,94 @@ function loadStatistics() {
 
 }
 
+// ===========================================
+// DAILY SUMMARY
+// ===========================================
+
+function buildDailySummary() {
+
+    let totalHours = 0;
+    let totalXP = 0;
+
+    const tasks = {};
+
+    for (const taskName in game.tasks) {
+
+        const task = game.tasks[taskName];
+
+        const hours = task.seconds / 3600;
+
+        tasks[taskName] = {
+
+            hours: Number(hours.toFixed(2)),
+            xp: Number(task.xp.toFixed(2))
+
+        };
+
+        totalHours += hours;
+        totalXP += task.xp;
+
+    }
+
+    return {
+
+        date: getTodayDate(),
+
+        totalHours: Number(totalHours.toFixed(2)),
+
+        totalXP: Number(totalXP.toFixed(2)),
+
+        tasks: tasks
+
+    };
+
+}
+
+// ===========================================
+// SAVE DAILY SUMMARY
+// ===========================================
+
+function saveDailySummary() {
+
+    const summary = buildDailySummary();
+
+    let summaries = JSON.parse(
+        localStorage.getItem("dailySummaries")
+    ) || {};
+
+    summaries[summary.date] = summary;
+
+    localStorage.setItem(
+        "dailySummaries",
+        JSON.stringify(summaries)
+    );
+
+}
+
+// ===========================================
+// LOAD DAILY SUMMARIES
+// ===========================================
+
+function loadDailySummaries() {
+
+    return JSON.parse(
+        localStorage.getItem("dailySummaries")
+    ) || {};
+
+}
+
+// ===========================================
+// GET DAILY SUMMARY
+// ===========================================
+
+function getDailySummary(date) {
+
+    const summaries = loadDailySummaries();
+
+    return summaries[date] || null;
+
+}
+
 // ===========================
 // DELETE SAVE
 // ===========================
@@ -147,7 +253,22 @@ function clearSave() {
 
     if (!confirmDelete) return;
 
+    // Main save
     localStorage.removeItem("lifeBuffSave");
+
+    // Statistics
+    localStorage.removeItem("lifeBuffStatistics");
+
+    // Daily summaries
+    localStorage.removeItem("dailySummaries");
+
+    // Calendar progress
+    localStorage.removeItem("calendarData");
+
+    // Last played date
+    localStorage.removeItem("lastPlayedDate");
+
+    console.log("🗑 All saved data deleted.");
 
     location.reload();
 
@@ -193,10 +314,30 @@ function saveLastPlayedDate() {
 
 function resetDailyData() {
 
-    // Stop any running timer
-    pauseTask();
+        pauseTask();
 
-    // Reset every task
+    let totalSeconds = 0;
+
+    for (const task in game.tasks) {
+
+        totalSeconds += game.tasks[task].seconds;
+
+    }
+
+    if (totalSeconds > 0) {
+
+        saveDayStatus("completed");
+
+    } else {
+
+        saveDayStatus("missed");
+
+    }
+
+    saveDailySummary();
+
+    // Now reset everything
+
     for (const task in game.tasks) {
 
         game.tasks[task].seconds = 0;
@@ -204,40 +345,16 @@ function resetDailyData() {
 
     }
 
-    // Reset session
     isClockedIn = false;
 
-    // Reset Clock In / Out display
     clockInDisplay.textContent = "--:--";
     clockOutDisplay.textContent = "--:--";
 
-    // Reset buttons
     clockInBtn.disabled = false;
     clockOutBtn.disabled = true;
 
-    // Refresh UI
     updateProductivity();
     updateLevelUI();
-
-    // Save yesterday as missed if nothing was completed
-
-    let totalSeconds = 0;
-
-    for (const task in game.tasks) {
-
-    totalSeconds += game.tasks[task].seconds;
-
-    }
-
-    if (totalSeconds > 0) {
-
-    saveDayStatus("completed");
-
-    } else {
-
-    saveDayStatus("missed");
-
-    }
 
     console.log("✅ Daily progress has been reset.");
 

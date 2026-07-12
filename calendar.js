@@ -118,6 +118,46 @@ if (calendarData[dateKey] === "missed") {
 
         }
 
+        // ===========================
+        // CLICK DAY
+        // ===========================
+
+        dayBox.addEventListener("click", () => {
+
+            const summary = getDailySummary(dateKey);
+
+            if (!summary) {
+
+                alert("📅 No activity recorded for this day.");
+
+                return;
+
+            }
+
+            let message =
+        `📅 ${summary.date}
+
+        ⭐ XP Earned: ${summary.totalXP}
+
+        ⏱ Total Hours: ${summary.totalHours}
+
+        `;
+
+            for (const task in summary.tasks) {
+
+                message +=
+        `${task}
+        Hours: ${summary.tasks[task].hours}
+        XP: ${summary.tasks[task].xp}
+
+        `;
+
+            }
+
+            alert(message);
+
+});
+
         calendarGrid.appendChild(dayBox);
 
     }
