@@ -40,6 +40,26 @@ const game = {
 
     totalLifetimeXP: 0,
 
+    // ===========================
+    // LIFETIME STATISTICS
+    // ===========================
+
+stats: {
+
+    totalHours: 0,
+
+    totalTasksCompleted: 0,
+
+    favoriteTask: "",
+
+    bestTaskHours: 0,
+
+    averageDailyHours: 0,
+
+    bestStreak: 0
+
+},
+
     maxXP: XP_PER_LEVEL,
 
     activeTask: null,

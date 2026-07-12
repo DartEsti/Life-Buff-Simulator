@@ -69,6 +69,30 @@ function startTask() {
 
         addXP(gainedXP);
 
+        game.stats.totalHours += 1 / 3600;
+
+        let highestHours = 0;
+
+    for (const taskName in game.tasks) {
+
+    const hours = game.tasks[taskName].seconds / 3600;
+
+    if (hours > highestHours) {
+
+        highestHours = hours;
+
+        game.stats.favoriteTask = taskName;
+
+    }
+
+}
+
+    if (highestHours > game.stats.bestTaskHours) {
+
+    game.stats.bestTaskHours = highestHours;
+
+}
+
         refreshCurrentTask();
 
         updateProductivity();
@@ -84,6 +108,13 @@ function startTask() {
 // ===========================
 
 function pauseTask() {
+
+    if (currentTask !== null &&
+        game.tasks[currentTask].seconds > 0) {
+
+        game.stats.totalTasksCompleted++;
+
+    }
 
     if (game.timer !== null) {
 
