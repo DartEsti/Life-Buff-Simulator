@@ -69,6 +69,9 @@ function startTask() {
 
         addXP(gainedXP);
 
+        checkAchievements();
+        updateAchievementCounter();
+
         game.stats.totalHours += 1 / 3600;
 
         let highestHours = 0;

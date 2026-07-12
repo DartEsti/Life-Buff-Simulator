@@ -63,7 +63,15 @@ function renderCalendar() {
     const daysInMonth =
         new Date(currentYear, currentMonth + 1, 0).getDate();
 
-    // Empty boxes
+    const calendarData = getCalendarData();
+
+    // Today's date (ignore current time)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // ===========================
+    // EMPTY CELLS
+    // ===========================
 
     for (let i = 0; i < firstDay; i++) {
 
@@ -75,7 +83,9 @@ function renderCalendar() {
 
     }
 
-    // Days
+    // ===========================
+    // DAYS
+    // ===========================
 
     for (let day = 1; day <= daysInMonth; day++) {
 
@@ -86,35 +96,41 @@ function renderCalendar() {
         dayBox.textContent = day;
 
         const dateKey =
-`${currentYear}-${String(currentMonth + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+            `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
-const calendarData = getCalendarData();
+        const cellDate = new Date(currentYear, currentMonth, day);
 
-if (calendarData[dateKey] === "completed") {
-
-    dayBox.classList.add("completed");
-
-}
-
-if (calendarData[dateKey] === "missed") {
-
-    dayBox.classList.add("missed");
-
-}
-
-        const today = new Date();
-
+        // Today's highlight
         if (
-
-            day === today.getDate() &&
-
-            currentMonth === today.getMonth() &&
-
-            currentYear === today.getFullYear()
-
+                day === today.getDate() &&
+                currentMonth === today.getMonth() &&
+                currentYear === today.getFullYear()
         ) {
 
             dayBox.classList.add("today");
+
+        }
+
+        // Completed day
+        if (calendarData[dateKey] === "completed") {
+
+            dayBox.classList.add("completed");
+
+        }
+
+        // Missed day
+        if (calendarData[dateKey] === "missed") {
+
+            dayBox.classList.add("missed");
+
+        }
+
+        // Future day
+        if (cellDate > today) {
+
+            dayBox.classList.add("future");
+
+            dayBox.style.pointerEvents = "none";
 
         }
 
@@ -135,28 +151,28 @@ if (calendarData[dateKey] === "missed") {
             }
 
             let message =
-        `📅 ${summary.date}
+`📅 ${summary.date}
 
-        ⭐ XP Earned: ${summary.totalXP}
+⭐ XP Earned: ${summary.totalXP}
 
-        ⏱ Total Hours: ${summary.totalHours}
+⏱ Total Hours: ${summary.totalHours}
 
-        `;
+`;
 
             for (const task in summary.tasks) {
 
                 message +=
-        `${task}
-        Hours: ${summary.tasks[task].hours}
-        XP: ${summary.tasks[task].xp}
+`${task}
+Hours: ${summary.tasks[task].hours}
+XP: ${summary.tasks[task].xp}
 
-        `;
+`;
 
             }
 
             alert(message);
 
-});
+        });
 
         calendarGrid.appendChild(dayBox);
 

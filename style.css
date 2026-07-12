@@ -961,27 +961,100 @@ html{
 
 /*
 
-Player Profile
+    Player Profile
 
-Player Rank
+    Player Rank
 
-Achievements
+    Statistics
 
-Statistics
+    Inventory
 
-Inventory
+    Badges
 
-Badges
+    Settings
 
-Settings
+    Themes
 
-Themes
+    Notifications
 
-Notifications
-
-Leaderboard
+    Leaderboard
 
 */
+
+/* ==========================================
+   ACHIEVEMENTS
+========================================== */
+
+#viewAchievementsBtn{
+
+    margin-top:15px;
+    width:100%;
+    background:#F59E0B;
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:12px;
+    cursor:pointer;
+    transition:.25s;
+
+}
+
+#viewAchievementsBtn:hover{
+
+    background:#D97706;
+    transform:translateY(-2px);
+
+}
+
+.achievement-popup{
+
+    position:fixed;
+    top:30px;
+    right:30px;
+
+    width:320px;
+
+    background:#1E293B;
+
+    border-left:6px solid #F59E0B;
+
+    border-radius:15px;
+
+    padding:18px;
+
+    color:white;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+
+    transform:translateX(400px);
+
+    transition:.4s;
+
+    z-index:5000;
+
+}
+
+.achievement-popup.show{
+
+    transform:translateX(0);
+
+}
+
+.achievement-popup h3{
+
+    color:#FACC15;
+
+    margin-bottom:8px;
+
+}
+
+.achievement-popup p{
+
+    color:#CBD5E1;
+
+    margin:0;
+
+}
 
 /* ==========================================
    END OF FILE
