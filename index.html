@@ -4,14 +4,21 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Life Buff Simulator</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+    <title>
+
+        Life Buff Simulator
+
+    </title>
+
+    <link rel="stylesheet"
+          href="style.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
 
 </head>
 
@@ -23,9 +30,17 @@
 
     <header>
 
-        <h1>🎮 Life Buff Simulator</h1>
+        <h1>
 
-        <p>Level Up Your Real Life</p>
+            🎮 Life Buff Simulator
+
+        </h1>
+
+        <p>
+
+            Level Up Your Real Life
+
+        </p>
 
     </header>
 
@@ -35,7 +50,9 @@
 
     <main>
 
+        <!-- ========================= -->
         <!-- TOP DASHBOARD -->
+        <!-- ========================= -->
 
         <section class="top">
 
@@ -44,12 +61,17 @@
             <div class="card level-card">
 
                 <h2 id="levelDisplay">
+
                     ⭐ Level 1
+
                 </h2>
 
                 <div class="xp-bar">
 
-                    <div class="xp-fill" id="xpFill"></div>
+                    <div class="xp-fill"
+                         id="xpFill">
+
+                    </div>
 
                 </div>
 
@@ -61,13 +83,124 @@
 
             </div>
 
-            <!-- ========================= -->
-            <!-- ACHIEVEMENTS -->
-            <!-- ========================= -->
+            <!-- TODAY'S SESSION -->
 
             <div class="card">
 
-                <h3>🏆 Achievements</h3>
+                <h3>
+
+                    🕒 Today's Session
+
+                </h3>
+
+                <p>
+
+                    Clock In
+
+                </p>
+
+                <h2 id="clockIn">
+
+                    --:--
+
+                </h2>
+
+                <p>
+
+                    Clock Out
+
+                </p>
+
+                <h2 id="clockOut">
+
+                    --:--
+
+                </h2>
+
+                <div class="session-buttons">
+
+                    <button id="clockInBtn"
+                            class="clock-in-btn">
+
+                        🟢 Clock In
+
+                    </button>
+
+                    <button id="clockOutBtn"
+                            class="clock-out-btn"
+                            disabled>
+
+                        🔴 Clock Out
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- DAILY STREAK -->
+
+            <div class="card">
+
+                <h3>
+
+                    🔥 Daily Streak
+
+                </h3>
+
+                <h1 id="streakDisplay">
+
+                    0 Days
+
+                </h1>
+
+            </div>
+
+            <!-- TODAY'S PRODUCTIVITY -->
+
+            <div class="card">
+
+                <h3>
+
+                    📊 Today's Productivity
+
+                </h3>
+
+                <p>
+
+                    Total Productive Time
+
+                </p>
+
+                <h2 id="workedHours">
+
+                    0 Hours
+
+                </h2>
+
+                <p>
+
+                    Free Time Remaining
+
+                </p>
+
+                <h2 id="freeTime">
+
+                    16 Hours
+
+                </h2>
+
+            </div>
+
+            <!-- ACHIEVEMENTS -->
+
+            <div class="card">
+
+                <h3>
+
+                    🏆 Achievements
+
+                </h3>
 
                 <h1 id="achievementCount">
 
@@ -89,228 +222,78 @@
 
             </div>
 
-            <!-- ========================= -->
-            <!-- LIFETIME STATISTICS -->
-            <!-- ========================= -->
-
-            <div class="card">
-
-                <h3>📈 Lifetime Statistics</h3>
-
-                <p>Total Hours</p>
-                <h2 id="statsTotalHours">0 Hours</h2>
-
-                <p>Tasks Completed</p>
-                <h2 id="statsTasksCompleted">0</h2>
-
-                <p>Favorite Task</p>
-                <h2 id="statsFavoriteTask">None</h2>
-
-            </div>
-
-            <!-- TODAY'S SESSION -->
-
-            <div class="card">
-
-                <h3>🕒 Today's Session</h3>
-
-                <p>Clock In</p>
-
-                <h2 id="clockIn">
-                    --:--
-                </h2>
-
-                <p>Clock Out</p>
-
-                <h2 id="clockOut">
-                    --:--
-                </h2>
-
-                <div class="session-buttons">
-
-                    <button id="clockInBtn" class="clock-in-btn">
-
-                        🟢 Clock In
-
-                    </button>
-
-                    <button id="clockOutBtn" class="clock-out-btn" disabled>
-
-                        🔴 Clock Out
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- STREAK -->
-
-            <div class="card">
-
-                <h3>🔥 Daily Streak</h3>
-
-                <h1 id="streakDisplay">
-
-                    0 Days
-
-                </h1>
-
-            </div>
-
-            <!-- PRODUCTIVITY -->
-
-            <div class="card">
-
-                <h3>📊 Today's Productivity</h3>
-
-                <p>Total Productive Time</p>
-
-                <h2 id="workedHours">
-
-                    0 Hours
-
-                </h2>
-
-                <p>Free Time Remaining</p>
-
-                <h2 id="freeTime">
-
-                    16 Hours
-
-                </h2>
-
-            </div>
-
         </section>
 
         <!-- ========================= -->
         <!-- CALENDAR -->
         <!-- ========================= -->
 
-<section class="calendar card">
+        <section class="calendar card">
 
-    <div class="calendar-header">
+            <div class="calendar-header">
 
-        <button id="prevMonthBtn">
+                <button id="prevMonthBtn">
 
-            ◀
+                    ◀
 
-        </button>
+                </button>
 
-        <h2 id="calendarTitle">
+                <h2 id="calendarTitle">
 
-            July 2026
+                    July 2026
 
-        </h2>
+                </h2>
 
-        <button id="nextMonthBtn">
+                <button id="nextMonthBtn">
 
-            ▶
+                    ▶
 
-        </button>
-
-    </div>
-
-    <div class="calendar-weekdays">
-
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
-
-    </div>
-
-    <div id="calendarGrid" class="calendar-grid">
-
-        <!-- Calendar generated by calendar.js -->
-
-    </div>
-
-</section>
-
-        <!-- TASKS -->
-
-        <section class="tasks">
-
-            <div class="task-card" data-task="Household Maintenance">
-
-                <div class="emoji">🏠</div>
-
-                <h3>Household Maintenance</h3>
+                </button>
 
             </div>
 
-            <div class="task-card" data-task="Exercise">
+            <div class="calendar-weekdays">
 
-                <div class="emoji">💪</div>
-
-                <h3>Exercise</h3>
-
-            </div>
-
-            <div class="task-card" data-task="Study">
-
-                <div class="emoji">📚</div>
-
-                <h3>Study</h3>
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
 
             </div>
 
-            <div class="task-card" data-task="Work">
-
-                <div class="emoji">💼</div>
-
-                <h3>Work</h3>
-
-            </div>
-
-            <div class="task-card" data-task="Personal Care">
-
-                <div class="emoji">🛁</div>
-
-                <h3>Personal Care</h3>
+            <div id="calendarGrid"
+                 class="calendar-grid">
 
             </div>
 
         </section>
 
-    </main>
+        <!-- ========================= -->
+        <!-- STATISTICS DASHBOARD -->
+        <!-- ========================= -->
 
-    <!-- ========================= -->
-    <!-- TASK POPUP -->
-    <!-- ========================= -->
+        <section class="statistics card">
 
-    <div class="modal" id="taskModal">
+            <h2>
 
-        <div class="modal-content">
-
-            <span class="close">
-
-                &times;
-
-            </span>
-
-            <h2 id="taskTitle">
-
-                Exercise
+                📈 Lifetime Statistics
 
             </h2>
 
-            <div class="task-stats">
+            <div class="statistics-grid">
 
                 <div class="stat-box">
 
                     <h4>
 
-                        ⭐ Today's XP
+                        ⭐ Lifetime XP
 
                     </h4>
 
-                    <p id="taskXP">
+                    <p id="statsLifetimeXP">
 
                         0 XP
 
@@ -322,11 +305,11 @@
 
                     <h4>
 
-                        ⏱ Today's Time
+                        ⏱ Total Hours
 
                     </h4>
 
-                    <p id="taskHours">
+                    <p id="statsTotalHours">
 
                         0 Hours
 
@@ -338,15 +321,15 @@
 
                     <h4>
 
-                        ⌛ Live Timer
+                        ✅ Tasks Completed
 
                     </h4>
 
-                    <div class="timer" id="timer">
+                    <p id="statsTasksCompleted">
 
-                        00:00:00
+                        0
 
-                    </div>
+                    </p>
 
                 </div>
 
@@ -354,13 +337,45 @@
 
                     <h4>
 
-                        ⚡ XP Rate
+                        🏆 Favorite Task
 
                     </h4>
 
-                    <p id="xpRate">
+                    <p id="statsFavoriteTask">
 
-                        0 XP / Hour
+                        None
+
+                    </p>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <h4>
+
+                        🔥 Current Streak
+
+                    </h4>
+
+                    <p id="statsCurrentStreak">
+
+                        0 Days
+
+                    </p>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <h4>
+
+                        📅 Days Played
+
+                    </h4>
+
+                    <p id="statsDaysPlayed">
+
+                        0
 
                     </p>
 
@@ -368,35 +383,214 @@
 
             </div>
 
-            <div class="buttons">
+        </section>
 
-                <button class="start" id="startBtn">
+        <!-- ========================= -->
+        <!-- TASKS -->
+        <!-- ========================= -->
 
-                    ▶ Start
+        <section class="tasks">
 
-                </button>
+            <div class="task-card"
+                 data-task="Household Maintenance">
 
-                <button class="pause" id="pauseBtn">
+                <div class="emoji">
 
-                    ⏸ Pause
+                    🏠
 
-                </button>
+                </div>
+
+                <h3>
+
+                    Household Maintenance
+
+                </h3>
+
+            </div>
+
+            <div class="task-card"
+                 data-task="Exercise">
+
+                <div class="emoji">
+
+                    💪
+
+                </div>
+
+                <h3>
+
+                    Exercise
+
+                </h3>
+
+            </div>
+
+            <div class="task-card"
+                 data-task="Study">
+
+                <div class="emoji">
+
+                    📚
+
+                </div>
+
+                <h3>
+
+                    Study
+
+                </h3>
+
+            </div>
+
+            <div class="task-card"
+                 data-task="Work">
+
+                <div class="emoji">
+
+                    💼
+
+                </div>
+
+                <h3>
+
+                    Work
+
+                </h3>
+
+            </div>
+
+            <div class="task-card"
+                 data-task="Personal Care">
+
+                <div class="emoji">
+
+                    🛁
+
+                </div>
+
+                <h3>
+
+                    Personal Care
+
+                </h3>
+
+            </div>
+
+        </section>
+</section></main>
+<!-- ========================= -->
+<!-- TASK POPUP -->
+<!-- ========================= -->
+
+<div class="modal" id="taskModal">
+
+    <div class="modal-content">
+
+        <span class="close">
+
+            &times;
+
+        </span>
+
+        <h2 id="taskTitle">
+
+            Exercise
+
+        </h2>
+
+        <div class="task-stats">
+
+            <div class="stat-box">
+
+                <h4>
+
+                    ⭐ Today's XP
+
+                </h4>
+
+                <p id="taskXP">
+
+                    0 XP
+
+                </p>
+
+            </div>
+
+            <div class="stat-box">
+
+                <h4>
+
+                    ⏱ Today's Time
+
+                </h4>
+
+                <p id="taskHours">
+
+                    0 Hours
+
+                </p>
+
+            </div>
+
+            <div class="stat-box">
+
+                <h4>
+
+                    ⌛ Live Timer
+
+                </h4>
+
+                <div class="timer" id="timer">
+
+                    00:00:00
+
+                </div>
+
+            </div>
+
+            <div class="stat-box">
+
+                <h4>
+
+                    ⚡ XP Rate
+
+                </h4>
+
+                <p id="xpRate">
+
+                    0 XP / Hour
+
+                </p>
 
             </div>
 
         </div>
 
+        <div class="buttons">
+
+            <button class="start" id="startBtn">
+
+                ▶ Start
+
+            </button>
+
+            <button class="pause" id="pauseBtn">
+
+                ⏸ Pause
+
+            </button>
+
+        </div>
+
     </div>
 
-    <script src="game.js"></script>
-    <script src="ui.js"></script>
-    <script src="tasks.js"></script>
-    <script src="session.js"></script>
-    <script src="storage.js"></script>
-    <script src="calendar.js"></script>
-    <script src="achievements.js"></script>
-    <script src="script.js"></script>
-
-</body>
-
-</html>
+</div>
+<script src="game.js"></script>
+<script src="ui.js"></script>
+<script src="tasks.js"></script>
+<script src="session.js"></script>
+<script src="storage.js"></script>
+<script src="calendar.js"></script>
+<script src="achievements.js"></script>
+<script src="script.js"></script>
+</body></html>

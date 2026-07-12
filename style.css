@@ -961,25 +961,99 @@ html{
 
 /*
 
-    Player Profile
+        Player Profile
 
-    Player Rank
+        Player Rank
 
-    Statistics
+        Inventory
 
-    Inventory
+        Badges
 
-    Badges
+        Settings
 
-    Settings
+        Themes
 
-    Themes
+        Notifications
 
-    Notifications
-
-    Leaderboard
+        Leaderboard
 
 */
+
+/* ==========================================
+   STATISTICS DASHBOARD
+========================================== */
+
+.statistics{
+
+    margin-top:35px;
+
+}
+
+.statistics h2{
+
+    color:#38BDF8;
+
+    margin-bottom:25px;
+
+    text-align:center;
+
+}
+
+.statistics-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+.statistics .stat-box{
+
+    background:#0F172A;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    text-align:center;
+
+    transition:.3s;
+
+    border:1px solid transparent;
+
+}
+
+.statistics .stat-box:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#38BDF8;
+
+    box-shadow:0 0 20px rgba(56,189,248,.25);
+
+}
+
+.statistics .stat-box h4{
+
+    color:#94A3B8;
+
+    margin-bottom:12px;
+
+    font-size:.95rem;
+
+}
+
+.statistics .stat-box p{
+
+    color:white;
+
+    font-size:1.4rem;
+
+    font-weight:600;
+
+}
 
 /* ==========================================
    ACHIEVEMENTS
