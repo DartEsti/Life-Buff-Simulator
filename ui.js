@@ -25,6 +25,19 @@ const workedHoursDisplay = document.getElementById("workedHours");
 const freeTimeDisplay = document.getElementById("freeTime");
 
 // ===========================
+// STATISTICS ELEMENTS
+// ===========================
+
+const statsTotalHours =
+    document.getElementById("statsTotalHours");
+
+const statsTasksCompleted =
+    document.getElementById("statsTasksCompleted");
+
+const statsFavoriteTask =
+    document.getElementById("statsFavoriteTask");
+
+// ===========================
 // UPDATE LEVEL UI
 // ===========================
 
@@ -41,6 +54,23 @@ function updateLevelUI() {
 
     xpFill.style.width =
         (game.currentXP / XP_PER_LEVEL) * 100 + "%";
+
+}
+
+// ===========================
+// UPDATE STATISTICS UI
+// ===========================
+
+function updateStatisticsUI() {
+
+    statsTotalHours.textContent =
+        game.stats.totalHours.toFixed(2) + " Hours";
+
+    statsTasksCompleted.textContent =
+        game.stats.totalTasksCompleted;
+
+    statsFavoriteTask.textContent =
+        game.stats.favoriteTask || "None";
 
 }
 

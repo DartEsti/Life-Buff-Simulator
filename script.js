@@ -21,6 +21,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     updateProductivity();
 
+    updateStatisticsUI();
+
     renderCalendar();
 
     // Check if a new day has started

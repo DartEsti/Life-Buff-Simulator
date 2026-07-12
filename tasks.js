@@ -97,6 +97,8 @@ function startTask() {
 
         updateProductivity();
 
+        updateStatisticsUI();
+
         saveGame();
 
     }, 1000);
@@ -127,6 +129,8 @@ function pauseTask() {
     game.activeTask = null;
 
     updateProductivity();
+
+    updateStatisticsUI();
 
     saveGame();
 
