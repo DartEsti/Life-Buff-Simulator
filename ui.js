@@ -21,6 +21,28 @@ const levelDisplay = document.getElementById("levelDisplay");
 const totalXPDisplay = document.getElementById("totalXP");
 const xpFill = document.getElementById("xpFill");
 
+// ===========================
+// STATISTICS DASHBOARD
+// ===========================
+
+const statsLifetimeXP =
+    document.getElementById("statsLifetimeXP");
+
+const statsTotalHours =
+    document.getElementById("statsTotalHours");
+
+const statsTasksCompleted =
+    document.getElementById("statsTasksCompleted");
+
+const statsFavoriteTask =
+    document.getElementById("statsFavoriteTask");
+
+const statsCurrentStreak =
+    document.getElementById("statsCurrentStreak");
+
+const statsDaysPlayed =
+    document.getElementById("statsDaysPlayed");
+
 const workedHoursDisplay = document.getElementById("workedHours");
 const freeTimeDisplay = document.getElementById("freeTime");
 
@@ -112,6 +134,32 @@ function updateProductivity() {
         totalSeconds += game.tasks[task].seconds;
 
     }
+
+// ===========================================
+// UPDATE STATISTICS DASHBOARD
+// ===========================================
+
+function updateStatisticsUI() {
+
+    statsLifetimeXP.textContent =
+        `${game.totalLifetimeXP.toFixed(0)} XP`;
+
+    statsTotalHours.textContent =
+        `${game.stats.totalHours.toFixed(1)} Hours`;
+
+    statsTasksCompleted.textContent =
+        game.stats.tasksCompleted;
+
+    statsFavoriteTask.textContent =
+        game.stats.favoriteTask;
+
+    statsCurrentStreak.textContent =
+        `${game.stats.currentStreak} Days`;
+
+    statsDaysPlayed.textContent =
+        game.stats.daysPlayed;
+
+}
 
     const totalHours = totalSeconds / 3600;
 

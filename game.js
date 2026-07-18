@@ -48,15 +48,13 @@ stats: {
 
     totalHours: 0,
 
-    totalTasksCompleted: 0,
+    tasksCompleted: 0,
 
-    favoriteTask: "",
+    favoriteTask: "None",
 
-    bestTaskHours: 0,
+    currentStreak: 0,
 
-    averageDailyHours: 0,
-
-    bestStreak: 0
+    daysPlayed: 0
 
 },
 

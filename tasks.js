@@ -143,6 +143,33 @@ function pauseTask() {
 
 }
 
+// ===========================================
+// UPDATE PLAYER STATISTICS
+// ===========================================
+
+// Total lifetime productive hours
+game.stats.totalHours += earnedSeconds / 3600;
+
+// Total completed task sessions
+game.stats.tasksCompleted++;
+
+// Determine favorite task
+let highestTime = 0;
+
+for (const taskName in game.tasks) {
+
+    if (game.tasks[taskName].seconds > highestTime) {
+
+        highestTime = game.tasks[taskName].seconds;
+
+        game.stats.favoriteTask = taskName;
+
+    }
+
+}
+
+updateStatisticsUI();
+
 // ===========================
 // CLOSE TASK
 // ===========================

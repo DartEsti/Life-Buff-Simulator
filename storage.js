@@ -398,20 +398,36 @@ function checkForNewDay() {
     const today = getTodayDate();
 
     // First time opening the website
-    if (lastPlayed === null) {
+if (lastPlayed === null) {
 
-        saveLastPlayedDate();
+    game.stats.daysPlayed = 1;
 
-        return;
+    game.stats.currentStreak = 1;
 
-    }
+    updateStatisticsUI();
+
+    saveStatistics();
+
+    saveLastPlayedDate();
+
+    return;
+
+}
 
     // A new day has started
-    if (lastPlayed !== today) {
+if (lastPlayed !== today) {
 
     console.log("🌅 New day detected!");
 
+    game.stats.daysPlayed++;
+
+    game.stats.currentStreak++;
+
     resetDailyData();
+
+    updateStatisticsUI();
+
+    saveStatistics();
 
     saveLastPlayedDate();
 
