@@ -146,7 +146,7 @@ function addXP(amount) {
 
     }
 
-    updateLevelUI();
+    refreshDashboard();
 
     saveGame();
 

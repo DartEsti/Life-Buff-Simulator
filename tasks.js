@@ -96,13 +96,7 @@ function startTask() {
 
 }
 
-        refreshCurrentTask();
-
-        updateProductivity();
-
-        updateStatisticsUI();
-
-        saveStatistics();
+        refreshDashboard();
 
         saveGame();
 
@@ -133,11 +127,7 @@ function pauseTask() {
 
     game.activeTask = null;
 
-    updateProductivity();
-
-    updateStatisticsUI();
-
-    saveStatistics();
+    refreshDashboard();
 
     saveGame();
 

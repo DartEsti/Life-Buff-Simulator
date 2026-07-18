@@ -73,11 +73,7 @@ function clockOut() {
 
     clockInBtn.disabled = false;
 
-    pauseTask();
-
-    hideTaskModal();
-
-    updateProductivity();
+    refreshDashboard();
 
     saveGame();
 

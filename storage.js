@@ -110,11 +110,7 @@ function loadGame() {
 
         }
 
-        updateLevelUI();
-
-    updateProductivity();
-
-    updateStatisticsUI();
+        refreshDashboard();
 
     console.log("Game Loaded Successfully.");
 
@@ -358,8 +354,7 @@ function resetDailyData() {
     clockInBtn.disabled = false;
     clockOutBtn.disabled = true;
 
-    updateProductivity();
-    updateLevelUI();
+    refreshDashboard();
 
     console.log("✅ Daily progress has been reset.");
 

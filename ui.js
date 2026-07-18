@@ -207,5 +207,19 @@ function refreshCurrentTask() {
 }
 
 // ===========================================
+// REFRESH ENTIRE DASHBOARD
+// ===========================================
+
+function refreshDashboard() {
+
+    updateLevelUI();
+
+    updateProductivity();
+
+    updateStatisticsUI();
+
+}
+
+// ===========================================
 // END OF FILE
 // ===========================================
