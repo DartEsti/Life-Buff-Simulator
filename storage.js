@@ -58,6 +58,8 @@ function saveGame() {
         JSON.stringify(saveData)
     );
 
+    saveStatistics();
+
 }
 
 // ===========================
@@ -109,9 +111,12 @@ function loadGame() {
         }
 
         updateLevelUI();
-        updateProductivity();
 
-        console.log("Game Loaded Successfully.");
+    updateProductivity();
+
+    updateStatisticsUI();
+
+    console.log("Game Loaded Successfully.");
 
     }
 
