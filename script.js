@@ -1,51 +1,62 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 0.7
+// Version 0.8
 // script.js
 // Main Initialization
 // ===========================================
 
-// ===========================
+// ===========================================
 // START GAME
-// ===========================
+// ===========================================
 
 window.addEventListener("DOMContentLoaded", () => {
 
-    // Load saved progress
+    console.log("🎮 Starting Life Buff Simulator...");
+
+    // =======================================
+    // LOAD SAVE DATA
+    // =======================================
+
     loadGame();
-
-    // Load lifetime statistics
+ 
     loadStatistics();
-
-    // Load achievements
+ 
     loadAchievements();
 
-    // Build calendar
+    // =======================================
+    // BUILD USER INTERFACE
+    // =======================================
+
     renderCalendar();
 
-    // Update all UI
-    updateLevelUI();
+    refreshDashboard();
 
-    updateProductivity();
-
-    updateStatisticsUI();
-    
     updateAchievementCounter();
 
-    // Check achievements immediately
+    // =======================================
+    // ACHIEVEMENTS
+    // =======================================
 
     checkAchievements();
 
-    // Check for daily reset
+    // =======================================
+    // DAILY RESET
+    // =======================================
 
-    checkForNewDay();
-
-    // Check every minute
-
+     checkForNewDay();
+ 
     setInterval(checkForNewDay, 60000);
 
-    console.log("🎮 Life Buff Simulator v0.7 Loaded Successfully");
+    // =======================================
+    // AUTO REFRESH CURRENT TASK
+    // =======================================
 
-    console.log(loadDailySummaries());
+    setInterval(() => {
+
+        refreshCurrentTask();
+
+    }, 1000);
+
+    console.log("✅ Life Buff Simulator v0.8 Loaded Successfully.");
 
 });

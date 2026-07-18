@@ -1,6 +1,6 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 0.5
+// Version 0.8
 // storage.js
 // Save System
 // ===========================================
@@ -23,20 +23,17 @@ const STORAGE_KEYS = {
 
 };
 
-// ===========================
+// ===========================================
 // SAVE GAME
-// ===========================
+// ===========================================
 
 function saveGame() {
 
     const saveData = {
 
-        level: game.level,
-
-        currentXP: game.currentXP,
-
-        totalLifetimeXP: game.totalLifetimeXP,
-
+         level: game.level,
+         currentXP: game.currentXP,
+         totalLifetimeXP: game.totalLifetimeXP,
         maxXP: game.maxXP,
 
         lastResetDate: game.lastResetDate,
@@ -47,28 +44,30 @@ function saveGame() {
 
         isClockedIn: isClockedIn,
 
-        clockInTime: clockInDisplay.textContent,
-
+         clockInTime: clockInDisplay.textContent,
         clockOutTime: clockOutDisplay.textContent
 
     };
 
     localStorage.setItem(
-        "lifeBuffSave",
+
+        STORAGE_KEYS.SAVE,
         JSON.stringify(saveData)
+
     );
 
     saveStatistics();
 
 }
 
-// ===========================
+// ===========================================
 // LOAD GAME
-// ===========================
+// ===========================================
 
 function loadGame() {
 
-    const savedData = localStorage.getItem("lifeBuffSave");
+    const savedData =
+        localStorage.getItem(STORAGE_KEYS.SAVE);
 
     if (!savedData) {
 
@@ -86,8 +85,11 @@ function loadGame() {
         game.currentXP = data.currentXP ?? 0;
         game.totalLifetimeXP = data.totalLifetimeXP ?? 0;
         game.maxXP = data.maxXP ?? XP_PER_LEVEL;
+
         game.lastResetDate = data.lastResetDate ?? null;
+
         game.activeTask = data.activeTask ?? null;
+
         game.tasks = data.tasks ?? game.tasks;
 
         isClockedIn = data.isClockedIn ?? false;
@@ -98,21 +100,12 @@ function loadGame() {
         clockOutDisplay.textContent =
             data.clockOutTime ?? "--:--";
 
-        if (isClockedIn) {
-
-            clockInBtn.disabled = true;
-            clockOutBtn.disabled = false;
-
-        } else {
-
-            clockInBtn.disabled = false;
-            clockOutBtn.disabled = true;
-
-        }
+        clockInBtn.disabled = isClockedIn;
+        clockOutBtn.disabled = !isClockedIn;
 
         refreshDashboard();
 
-    console.log("Game Loaded Successfully.");
+        console.log("Game Loaded Successfully.");
 
     }
 
@@ -120,7 +113,7 @@ function loadGame() {
 
         console.error("Corrupted save file.");
 
-        localStorage.removeItem("lifeBuffSave");
+        localStorage.removeItem(STORAGE_KEYS.SAVE);
 
     }
 
@@ -133,8 +126,10 @@ function loadGame() {
 function saveStatistics() {
 
     localStorage.setItem(
-        "lifeBuffStatistics",
+
+        STORAGE_KEYS.STATISTICS,
         JSON.stringify(game.stats)
+
     );
 
 }
@@ -142,14 +137,12 @@ function saveStatistics() {
 function loadStatistics() {
 
     const savedStats =
-        localStorage.getItem("lifeBuffStatistics");
+        localStorage.getItem(STORAGE_KEYS.STATISTICS);
 
-    if (savedStats) {
+    if (!savedStats) return;
 
-        game.stats = JSON.parse(savedStats);
-
-    }
-
+    game.stats = JSON.parse(savedStats);
+ 
 }
 
 // ===========================================
@@ -189,7 +182,7 @@ function buildDailySummary() {
 
         totalXP: Number(totalXP.toFixed(2)),
 
-        tasks: tasks
+        tasks
 
     };
 
@@ -204,14 +197,18 @@ function saveDailySummary() {
     const summary = buildDailySummary();
 
     let summaries = JSON.parse(
-        localStorage.getItem("dailySummaries")
+
+        localStorage.getItem(STORAGE_KEYS.DAILY_SUMMARIES)
+
     ) || {};
 
     summaries[summary.date] = summary;
 
     localStorage.setItem(
-        "dailySummaries",
+
+        STORAGE_KEYS.DAILY_SUMMARIES,
         JSON.stringify(summaries)
+
     );
 
 }
@@ -223,7 +220,9 @@ function saveDailySummary() {
 function loadDailySummaries() {
 
     return JSON.parse(
-        localStorage.getItem("dailySummaries")
+
+        localStorage.getItem(STORAGE_KEYS.DAILY_SUMMARIES)
+
     ) || {};
 
 }
@@ -234,15 +233,13 @@ function loadDailySummaries() {
 
 function getDailySummary(date) {
 
-    const summaries = loadDailySummaries();
-
-    return summaries[date] || null;
+    return loadDailySummaries()[date] ?? null;
 
 }
 
-// ===========================
+// ===========================================
 // DELETE SAVE
-// ===========================
+// ===========================================
 
 function clearSave() {
 
@@ -254,20 +251,11 @@ function clearSave() {
 
     if (!confirmDelete) return;
 
-    // Main save
-    localStorage.removeItem("lifeBuffSave");
-
-    // Statistics
-    localStorage.removeItem("lifeBuffStatistics");
-
-    // Daily summaries
-    localStorage.removeItem("dailySummaries");
-
-    // Calendar progress
-    localStorage.removeItem("calendarData");
-
-    // Last played date
-    localStorage.removeItem("lastPlayedDate");
+    localStorage.removeItem(STORAGE_KEYS.SAVE);
+    localStorage.removeItem(STORAGE_KEYS.STATISTICS);
+    localStorage.removeItem(STORAGE_KEYS.DAILY_SUMMARIES);
+    localStorage.removeItem(STORAGE_KEYS.CALENDAR);
+    localStorage.removeItem(STORAGE_KEYS.LAST_PLAYED);
 
     console.log("🗑 All saved data deleted.");
 
@@ -275,37 +263,37 @@ function clearSave() {
 
 }
 
-// ===========================
+// ===========================================
 // AUTO SAVE
-// ===========================
+// ===========================================
 
-setInterval(() => {
-
-    saveGame();
-
-}, 30000);
+setInterval(saveGame, 30000);
 
 // ===========================================
-// DAILY RESET MANAGER
+// DATE HELPERS
 // ===========================================
 
 function getTodayDate() {
 
-    const today = new Date();
-
-    return today.toISOString().split("T")[0];
+    return new Date().toISOString().split("T")[0];
 
 }
 
 function getLastPlayedDate() {
 
-    return localStorage.getItem("lastPlayedDate");
+    return localStorage.getItem(STORAGE_KEYS.LAST_PLAYED);
 
 }
 
 function saveLastPlayedDate() {
 
-    localStorage.setItem("lastPlayedDate", getTodayDate());
+    localStorage.setItem(
+
+        STORAGE_KEYS.LAST_PLAYED,
+
+        getTodayDate()
+
+    );
 
 }
 
@@ -315,7 +303,7 @@ function saveLastPlayedDate() {
 
 function resetDailyData() {
 
-        pauseTask();
+    pauseTask();
 
     let totalSeconds = 0;
 
@@ -329,16 +317,16 @@ function resetDailyData() {
 
         saveDayStatus("completed");
 
-    } else {
+    }
+
+    else {
 
         saveDayStatus("missed");
 
     }
 
-    saveDailySummary();
-
-    // Now reset everything
-
+     saveDailySummary();
+ 
     for (const task in game.tasks) {
 
         game.tasks[task].seconds = 0;
@@ -361,21 +349,27 @@ function resetDailyData() {
 }
 
 // ===========================================
-// DAILY CALENDAR STATUS
+// CALENDAR DATA
 // ===========================================
 
 function saveDayStatus(status) {
 
     const today = getTodayDate();
 
-    let calendarData =
-        JSON.parse(localStorage.getItem("calendarData")) || {};
+    let calendarData = JSON.parse(
+
+        localStorage.getItem(STORAGE_KEYS.CALENDAR)
+
+    ) || {};
 
     calendarData[today] = status;
 
     localStorage.setItem(
-        "calendarData",
+
+        STORAGE_KEYS.CALENDAR,
+
         JSON.stringify(calendarData)
+
     );
 
 }
@@ -383,10 +377,12 @@ function saveDayStatus(status) {
 function getCalendarData() {
 
     return JSON.parse(
-        localStorage.getItem("calendarData")
+
+        localStorage.getItem(STORAGE_KEYS.CALENDAR)
+
     ) || {};
 
-}   
+}
 
 // ===========================================
 // CHECK FOR NEW DAY
@@ -395,29 +391,46 @@ function getCalendarData() {
 function checkForNewDay() {
 
     const lastPlayed = getLastPlayedDate();
+
     const today = getTodayDate();
 
-    // First time opening the website
-if (lastPlayed === null) {
+    // =======================================
+    // FIRST TIME OPENING THE GAME
+    // =======================================
 
-    game.stats.daysPlayed = 1;
+    if (lastPlayed === null) {
 
-    game.stats.currentStreak = 1;
+        game.stats.daysPlayed = 1;
 
-    updateStatisticsUI();
+        game.stats.currentStreak = 1;
 
-    saveStatistics();
+        updateStatisticsUI();
 
-    saveLastPlayedDate();
+        saveStatistics();
 
-    return;
+        saveLastPlayedDate();
 
-}
+        console.log("🎉 First launch detected.");
 
-    // A new day has started
-if (lastPlayed !== today) {
+        return;
 
-    console.log("🌅 New day detected!");
+    }
+
+    // =======================================
+    // SAME DAY
+    // =======================================
+
+    if (lastPlayed === today) {
+
+        return;
+
+    }
+
+    // =======================================
+    // NEW DAY
+    // =======================================
+
+    console.log("🌅 New day detected.");
 
     game.stats.daysPlayed++;
 
@@ -432,6 +445,108 @@ if (lastPlayed !== today) {
     saveLastPlayedDate();
 
 }
+
+// ===========================================
+// MANUAL SAVE
+// ===========================================
+
+function manualSave() {
+
+    saveGame();
+
+    console.log("💾 Game Saved.");
+
+}
+
+// ===========================================
+// MANUAL LOAD
+// ===========================================
+
+function manualLoad() {
+
+    loadGame();
+
+    loadStatistics();
+
+    refreshDashboard();
+
+    console.log("📂 Save Loaded.");
+
+}
+
+// ===========================================
+// EXPORT SAVE
+// ===========================================
+
+function exportSave() {
+
+    const save = localStorage.getItem(
+
+        STORAGE_KEYS.SAVE
+
+    );
+
+    if (!save) {
+
+        alert("No save data found.");
+
+        return;
+
+    }
+
+    const blob = new Blob(
+
+        [save],
+
+        { type: "application/json" }
+
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "LifeBuffSave.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+// ===========================================
+// IMPORT SAVE
+// ===========================================
+
+function importSave(jsonData) {
+
+    try {
+
+        JSON.parse(jsonData);
+
+        localStorage.setItem(
+
+            STORAGE_KEYS.SAVE,
+
+            jsonData
+
+        );
+
+        loadGame();
+
+        refreshDashboard();
+
+        console.log("📂 Save Imported.");
+
+    }
+
+    catch {
+
+        alert("Invalid Save File.");
+
+    }
 
 }
 

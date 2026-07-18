@@ -1,18 +1,21 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 0.5
+// Version 0.8
 // game.js
 // Core Game Logic
 // ===========================================
 
-// ===========================
+// ===========================================
 // GAME SETTINGS
-// ===========================
+// ===========================================
 
 const MAX_LEVEL = 150;
+
 const XP_PER_LEVEL = 1000;
 
-// XP gained per hour
+// ===========================================
+// XP RATES
+// ===========================================
 
 const xpRates = {
 
@@ -28,9 +31,9 @@ const xpRates = {
 
 };
 
-// ===========================
+// ===========================================
 // GAME DATA
-// ===========================
+// ===========================================
 
 const game = {
 
@@ -38,25 +41,7 @@ const game = {
 
     currentXP: 0,
 
-    totalLifetimeXP: 0,
-
-    // ===========================
-    // LIFETIME STATISTICS
-    // ===========================
-
-stats: {
-
-    totalHours: 0,
-
-    tasksCompleted: 0,
-
-    favoriteTask: "None",
-
-    currentStreak: 0,
-
-    daysPlayed: 0
-
-},
+     totalLifetimeXP: 0,
 
     maxXP: XP_PER_LEVEL,
 
@@ -65,6 +50,30 @@ stats: {
     timer: null,
 
     lastResetDate: null,
+
+    // =======================================
+    // PLAYER STATISTICS
+    // =======================================
+
+    stats: {
+
+        totalHours: 0,
+
+        totalTasksCompleted: 0,
+
+        favoriteTask: "None",
+
+        currentStreak: 0,
+
+        daysPlayed: 0,
+
+        bestTaskHours: 0
+
+    },
+
+    // =======================================
+    // TASK DATA
+    // =======================================
 
     tasks: {
 
@@ -112,15 +121,15 @@ stats: {
 
 };
 
-// ===========================
+// ===========================================
 // CURRENT TASK
-// ===========================
+// ===========================================
 
 let currentTask = null;
 
-// ===========================
+// ===========================================
 // ADD XP
-// ===========================
+// ===========================================
 
 function addXP(amount) {
 
@@ -128,7 +137,13 @@ function addXP(amount) {
 
     game.totalLifetimeXP += amount;
 
-    while (game.currentXP >= XP_PER_LEVEL && game.level < MAX_LEVEL) {
+    while (
+
+        game.currentXP >= XP_PER_LEVEL &&
+
+        game.level < MAX_LEVEL
+
+    ) {
 
         game.currentXP -= XP_PER_LEVEL;
 
@@ -142,7 +157,13 @@ function addXP(amount) {
 
         game.level = MAX_LEVEL;
 
-        game.currentXP = Math.min(game.currentXP, XP_PER_LEVEL);
+        game.currentXP = Math.min(
+
+            game.currentXP,
+
+            XP_PER_LEVEL
+
+        );
 
     }
 
@@ -152,85 +173,37 @@ function addXP(amount) {
 
 }
 
-// ===========================
+// ===========================================
 // LEVEL UP
-// ===========================
+// ===========================================
 
 function levelUp() {
 
-    alert("🎉 LEVEL UP!\n\nWelcome to Level " + game.level + "!");
+    alert(
+
+        `🎉 LEVEL UP!\n\nWelcome to Level ${game.level}!`
+
+    );
 
 }
 
-// ===========================
-// DAILY RESET
-// ===========================
-
-function resetDailyTasks() {
-
-    for (const task in game.tasks) {
-
-        game.tasks[task].seconds = 0;
-
-        game.tasks[task].xp = 0;
-
-    }
-
-    game.activeTask = null;
-
-    if (typeof pauseTask === "function") {
-
-        pauseTask();
-
-    }
-
-    if (typeof updateProductivity === "function") {
-
-        updateProductivity();
-
-    }
-
-    game.lastResetDate = new Date().toDateString();
-
-    saveGame();
-
-}
-
-// ===========================
-// CHECK FOR NEW DAY
-// ===========================
-
-function checkForNewDay() {
-
-    const today = new Date().toDateString();
-
-    if (game.lastResetDate === null) {
-
-        game.lastResetDate = today;
-
-        saveGame();
-
-        return;
-
-    }
-
-    if (today !== game.lastResetDate) {
-
-        resetDailyTasks();
-        
-    }
-
-}
-
-// ===========================
+// ===========================================
 // FORMAT TIME
-// ===========================
+// ===========================================
 
 function formatTime(totalSeconds) {
 
-    const hours = Math.floor(totalSeconds / 3600);
+    const hours = Math.floor(
 
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
+        totalSeconds / 3600
+
+    );
+
+    const minutes = Math.floor(
+
+        (totalSeconds % 3600) / 60
+
+    );
 
     const seconds = totalSeconds % 60;
 

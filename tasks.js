@@ -108,20 +108,38 @@ function startTask() {
 // PAUSE TASK
 // ===========================
 
-function pauseTask() {
-
-    if (currentTask !== null &&
-        game.tasks[currentTask].seconds > 0) {
-
-        game.stats.totalTasksCompleted++;
-
-    }
+    function pauseTask() {
 
     if (game.timer !== null) {
 
         clearInterval(game.timer);
 
         game.timer = null;
+
+    }
+
+    // Count completed task session
+    if (
+        currentTask !== null &&
+        game.tasks[currentTask].seconds > 0
+    ) {
+
+        game.stats.tasksCompleted++;
+
+    }
+
+    // Find favorite task
+    let highestSeconds = 0;
+
+    for (const taskName in game.tasks) {
+
+        if (game.tasks[taskName].seconds > highestSeconds) {
+
+            highestSeconds = game.tasks[taskName].seconds;
+
+            game.stats.favoriteTask = taskName;
+
+        }
 
     }
 
@@ -132,34 +150,7 @@ function pauseTask() {
     saveGame();
 
 }
-
-// ===========================================
-// UPDATE PLAYER STATISTICS
-// ===========================================
-
-// Total lifetime productive hours
-game.stats.totalHours += earnedSeconds / 3600;
-
-// Total completed task sessions
-game.stats.tasksCompleted++;
-
-// Determine favorite task
-let highestTime = 0;
-
-for (const taskName in game.tasks) {
-
-    if (game.tasks[taskName].seconds > highestTime) {
-
-        highestTime = game.tasks[taskName].seconds;
-
-        game.stats.favoriteTask = taskName;
-
-    }
-
-}
-
-updateStatisticsUI();
-
+ 
 // ===========================
 // CLOSE TASK
 // ===========================
