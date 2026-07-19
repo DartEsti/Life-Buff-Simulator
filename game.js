@@ -151,6 +151,8 @@ function addXP(amount) {
 
     game.totalLifetimeXP += amount;
 
+    showXPPopup(amount);
+
     while (
 
         game.currentXP >= XP_PER_LEVEL &&
@@ -193,11 +195,7 @@ function addXP(amount) {
 
 function levelUp() {
 
-    alert(
-
-        `🎉 LEVEL UP!\n\nWelcome to Level ${game.level}!`
-
-    );
+    showLevelUpAnimation();
 
 }
 
@@ -224,6 +222,50 @@ function formatTime(totalSeconds) {
     return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
 }
+
+// ===========================================
+// XP POPUP
+// ===========================================
+
+function showXPPopup(amount) {
+
+    const popup = document.createElement("div");
+
+    popup.className = "xp-popup";
+
+    popup.textContent = `+${amount.toFixed(2)} XP`;
+
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+
+        popup.remove();
+
+    }, 1200);
+
+}
+
+// ===========================================
+// LEVEL UP ANIMATION
+// ===========================================
+
+function showLevelUpAnimation() {
+
+    const overlay = document.createElement("div");
+
+    overlay.className = "level-up";
+
+    overlay.textContent = `🎉 LEVEL ${game.level}!`;
+
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+
+        overlay.remove();
+
+    }, 2000);
+
+}   
 
 // ===========================================
 // END OF FILE

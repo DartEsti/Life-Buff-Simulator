@@ -162,7 +162,7 @@ main{
         #4ADE80
     );
 
-    transition:.35s;
+    transition:width .6s ease-in-out;
 
 }
 
@@ -900,6 +900,40 @@ RESPONSIVE DESIGN
 
     }
 
+    .profile{
+
+    padding:18px;
+
+}
+
+.profile-avatar{
+
+    width:90px;
+
+    height:90px;
+
+    font-size:48px;
+
+}
+
+.statistics-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.modal-content{
+
+    width:95%;
+
+}
+
+.buttons button{
+
+    width:100%;
+
+}
+
 }
 
 /* ==========================================
@@ -1249,6 +1283,127 @@ html{
 #changeNameBtn:hover {
 
     background: #43A047;
+
+}
+
+/* ==========================================
+   XP POPUP
+========================================== */
+
+.xp-popup{
+
+    position:fixed;
+
+    left:50%;
+    top:55%;
+
+    transform:translate(-50%,-50%);
+
+    font-size:2rem;
+
+    font-weight:bold;
+
+    color:#22C55E;
+
+    pointer-events:none;
+
+    z-index:9999;
+
+    animation:xpPopup 1.2s ease forwards;
+
+}
+
+@keyframes xpPopup{
+
+    0%{
+
+        opacity:0;
+
+        transform:translate(-50%,0) scale(.7);
+
+    }
+
+    20%{
+
+        opacity:1;
+
+        transform:translate(-50%,-20px) scale(1);
+
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:translate(-50%,-90px) scale(1.15);
+
+    }
+
+}
+
+/* ==========================================
+   LEVEL UP
+========================================== */
+
+.level-up{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.75);
+
+    font-size:4rem;
+
+    font-weight:bold;
+
+    color:#FFD700;
+
+    z-index:10000;
+
+    animation:levelUpAnim 2s ease forwards;
+
+}
+
+@keyframes levelUpAnim{
+
+    0%{
+
+        opacity:0;
+
+        transform:scale(.5);
+
+    }
+
+    20%{
+
+        opacity:1;
+
+        transform:scale(1.15);
+
+    }
+
+    80%{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:scale(1.3);
+
+    }
 
 }
 
