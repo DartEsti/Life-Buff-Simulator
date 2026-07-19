@@ -137,12 +137,34 @@ function saveStatistics() {
 function loadStatistics() {
 
     const savedStats =
-        localStorage.getItem(STORAGE_KEYS.STATISTICS);
+        localStorage.getItem("lifeBuffStatistics");
 
     if (!savedStats) return;
 
-    game.stats = JSON.parse(savedStats);
- 
+    const data = JSON.parse(savedStats);
+
+    game.stats = {
+
+        totalHours:
+            data.totalHours ?? 0,
+
+        totalTasksCompleted:
+            data.totalTasksCompleted ?? 0,
+
+        favoriteTask:
+            data.favoriteTask ?? "None",
+
+        currentStreak:
+            data.currentStreak ?? 0,
+
+        daysPlayed:
+            data.daysPlayed ?? 0,
+
+        bestTaskHours:
+            data.bestTaskHours ?? 0
+
+    };
+
 }
 
 // ===========================================

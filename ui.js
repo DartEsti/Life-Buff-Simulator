@@ -139,24 +139,24 @@ function updateProductivity() {
 function updateStatisticsUI() {
 
     statsLifetimeXP.textContent =
-        `${game.totalLifetimeXP.toFixed(0)} XP`;
+        `${(game.totalLifetimeXP ?? 0).toFixed(0)} XP`;
 
     statsTotalHours.textContent =
-        `${game.stats.totalHours.toFixed(2)} Hours`;
+        `${(game.stats.totalHours ?? 0).toFixed(2)} Hours`;
 
     statsTasksCompleted.textContent =
-        game.stats.tasksCompleted;
+        game.stats.totalTasksCompleted ?? 0;
 
     statsFavoriteTask.textContent =
-        game.stats.favoriteTask || "None";
+        game.stats.favoriteTask ?? "None";
 
     statsCurrentStreak.textContent =
-        `${game.stats.currentStreak} Days`;
+        `${game.stats.currentStreak ?? 0} Days`;
 
     statsDaysPlayed.textContent =
-        game.stats.daysPlayed;
+        game.stats.daysPlayed ?? 0;
 
- }
+}
 
  // ===========================
 // UPDATE PLAYER PROFILE

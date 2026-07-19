@@ -43,6 +43,20 @@ const game = {
 
      totalLifetimeXP: 0,
 
+    // ===========================
+    // PLAYER PROFILE
+    // ===========================
+
+    player: {
+
+        name: "Player",
+
+        title: "Beginner",
+
+        avatar: "😀"
+
+    },
+
     maxXP: XP_PER_LEVEL,
 
     activeTask: null,
