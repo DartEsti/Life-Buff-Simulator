@@ -20,19 +20,7 @@ const xpRateDisplay = document.getElementById("xpRate");
 const levelDisplay = document.getElementById("levelDisplay");
 const totalXPDisplay = document.getElementById("totalXP");
 const xpFill = document.getElementById("xpFill");
-
-const playerName =
-    document.getElementById("playerName");
-
-const playerRank =
-    document.getElementById("playerRank");
-
-const profileLevel =
-    document.getElementById("profileLevel");
-
-const profileXP =
-    document.getElementById("profileXP");
-
+    
 const workedHoursDisplay =
     document.getElementById("workedHours");
 
@@ -60,6 +48,25 @@ const statsCurrentStreak =
 
 const statsDaysPlayed =
     document.getElementById("statsDaysPlayed");
+
+// ===========================
+// PLAYER PROFILE
+// ===========================
+
+const playerAvatar =
+    document.getElementById("playerAvatar");
+
+const playerName =
+    document.getElementById("playerName");
+
+const playerTitle =
+    document.getElementById("playerTitle");
+
+const playerLevel =
+    document.getElementById("playerLevel");
+
+const playerXP =
+    document.getElementById("playerXP");
  
 // ===========================
 // UPDATE LEVEL UI
@@ -158,42 +165,42 @@ function updateStatisticsUI() {
 
 }
 
- // ===========================
+// ===========================
 // UPDATE PLAYER PROFILE
 // ===========================
 
-function updatePlayerProfile() {
+    function updatePlayerProfile() {
 
-    // Player Name
-    playerName.textContent = "Player";
+        let rank = "Beginner";
 
-    // Player Rank
+        if (game.level >= 10)
+            rank = "Adventurer";
 
-    let rank = "Beginner";
+        if (game.level >= 25)
+            rank = "Veteran";
 
-    if (game.level >= 10)
-        rank = "Adventurer";
+        if (game.level >= 50)
+            rank = "Elite";
 
-    if (game.level >= 25)
-        rank = "Veteran";
+        if (game.level >= 100)
+            rank = "Legend";
 
-    if (game.level >= 50)
-        rank = "Elite";
+        game.player.title = rank;
 
-    if (game.level >= 100)
-        rank = "Legend";
+        playerAvatar.textContent =
+            game.player.avatar;
 
-    playerRank.textContent = rank;
+        playerName.textContent =
+            game.player.name;
 
-    // Current Level
+        playerTitle.textContent =
+            game.player.title;
 
-    profileLevel.textContent =
-        `Level ${game.level}`;
+        playerLevel.textContent =
+            `Level ${game.level}`;
 
-    // Lifetime XP
-
-    profileXP.textContent =
-        `${Math.floor(game.totalLifetimeXP)} XP`;
+        playerXP.textContent =
+            `${Math.floor(game.totalLifetimeXP)} XP`;
 
 }
 

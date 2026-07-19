@@ -38,15 +38,7 @@ window.addEventListener("DOMContentLoaded", () => {
     refreshDashboard();
 
     updateAchievementCounter();
-
-    // Player Profile (Version 0.9)
-
-    if (typeof updatePlayerProfile === "function") {
-
-        updatePlayerProfile();
-
-    }
-
+ 
     // =======================================
     // ACHIEVEMENTS
     // =======================================
@@ -57,21 +49,13 @@ window.addEventListener("DOMContentLoaded", () => {
     // AUTO CHECK NEW DAY
     // =======================================
 
-    setInterval(() => {
-
-        checkForNewDay();
-
-    }, 60000);
+    setInterval(checkForNewDay, 60000);
 
     // =======================================
     // LIVE TASK TIMER REFRESH
     // =======================================
 
-    setInterval(() => {
-
-        refreshCurrentTask();
-
-    }, 1000);
+    setInterval(refreshCurrentTask, 1000);
 
     console.log("✅ Life Buff Simulator v0.9 Loaded Successfully.");
 

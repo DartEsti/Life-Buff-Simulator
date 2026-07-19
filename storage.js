@@ -34,6 +34,7 @@ function saveGame() {
          level: game.level,
          currentXP: game.currentXP,
          totalLifetimeXP: game.totalLifetimeXP,
+         player: game.player,
         maxXP: game.maxXP,
 
         lastResetDate: game.lastResetDate,
@@ -84,6 +85,17 @@ function loadGame() {
         game.level = data.level ?? 1;
         game.currentXP = data.currentXP ?? 0;
         game.totalLifetimeXP = data.totalLifetimeXP ?? 0;
+
+        game.player = data.player ?? {
+
+            name: "Player",
+
+            title: "Beginner",
+
+            avatar: "😀"
+
+        };
+
         game.maxXP = data.maxXP ?? XP_PER_LEVEL;
 
         game.lastResetDate = data.lastResetDate ?? null;
@@ -137,7 +149,7 @@ function saveStatistics() {
 function loadStatistics() {
 
     const savedStats =
-        localStorage.getItem("lifeBuffStatistics");
+        localStorage.getItem(STORAGE_KEYS.STATISTICS);
 
     if (!savedStats) return;
 
@@ -368,6 +380,8 @@ function resetDailyData() {
 
     console.log("✅ Daily progress has been reset.");
 
+    saveGame();
+
 }
 
 // ===========================================
@@ -557,6 +571,8 @@ function importSave(jsonData) {
         );
 
         loadGame();
+
+        loadStatistics();
 
         refreshDashboard();
 
