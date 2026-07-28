@@ -1,6 +1,6 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 0.9
+// Version 1.0
 // script.js
 // Main Initialization
 // ===========================================

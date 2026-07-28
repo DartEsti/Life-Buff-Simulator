@@ -1,6 +1,6 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 0.7
+// Version 1.0
 // achievements.js
 // ===========================================
 
@@ -284,3 +284,5 @@ viewAchievementsBtn.addEventListener("click",()=>{
 // ===========================
 
 loadAchievements();
+
+// END OF FILE

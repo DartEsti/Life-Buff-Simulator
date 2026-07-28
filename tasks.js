@@ -1,6 +1,6 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 0.5
+// Version 1.0
 // tasks.js
 // Task System
 // ===========================================
@@ -124,7 +124,7 @@ function startTask() {
         game.tasks[currentTask].seconds > 0
     ) {
 
-        game.stats.tasksCompleted++;
+        game.stats.totalTasksCompleted++
 
     }
 
@@ -144,6 +144,8 @@ function startTask() {
     }
 
     game.activeTask = null;
+
+    currentTask = null;
 
     refreshDashboard();
 
