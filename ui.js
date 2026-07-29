@@ -55,6 +55,7 @@ const statsDaysPlayed =
 
 const changeNameBtn =
     document.getElementById("changeNameBtn");
+
 const profileXPFill =
     document.getElementById("profileXPFill");
 
@@ -67,15 +68,16 @@ const playerAvatar =
 const playerName =
     document.getElementById("playerName");
 
-const playerTitle =
-    document.getElementById("playerTitle");
+// Fixed IDs
+const playerRank =
+    document.getElementById("playerRank");
 
-const playerLevel =
-    document.getElementById("playerLevel");
+const profileLevel =
+    document.getElementById("profileLevel");
 
-const playerXP =
-    document.getElementById("playerXP");
- 
+const profileXP =
+    document.getElementById("profileXP");
+
 // ===========================
 // UPDATE LEVEL UI
 // ===========================
@@ -177,89 +179,69 @@ function updateStatisticsUI() {
 // UPDATE PLAYER PROFILE
 // ===========================
 
-    function updatePlayerProfile() {
+function updatePlayerProfile() {
 
-        let rank = "Beginner";
+    let rank = "Beginner";
 
-        if (game.level >= 5)
-            rank = "Novice";
+    if (game.level >= 5) rank = "Novice";
+    if (game.level >= 10) rank = "Adventurer";
+    if (game.level >= 20) rank = "Explorer";
+    if (game.level >= 30) rank = "Veteran";
+    if (game.level >= 50) rank = "Elite";
+    if (game.level >= 75) rank = "Master";
+    if (game.level >= 100) rank = "Legend";
+    if (game.level >= 125) rank = "Mythic";
+    if (game.level >= 150) rank = "Life Buff God";
 
-        if (game.level >= 10)
-            rank = "Adventurer";
+    game.player.title = rank;
 
-        if (game.level >= 20)
-            rank = "Explorer";
+    if (game.level >= 150)
+        game.player.avatar = "👑";
+    else if (game.level >= 100)
+        game.player.avatar = "🐉";
+    else if (game.level >= 75)
+        game.player.avatar = "🧙";
+    else if (game.level >= 50)
+        game.player.avatar = "⚔️";
+    else if (game.level >= 30)
+        game.player.avatar = "🛡️";
+    else if (game.level >= 20)
+        game.player.avatar = "🏹";
+    else if (game.level >= 10)
+        game.player.avatar = "🧑‍🚀";
+    else if (game.level >= 5)
+        game.player.avatar = "😎";
+    else
+        game.player.avatar = "😀";
 
-        if (game.level >= 30)
-            rank = "Veteran";
+    playerAvatar.textContent =
+        game.player.avatar;
 
-        if (game.level >= 50)
-            rank = "Elite";
+    playerName.textContent =
+        game.player.name;
 
-        if (game.level >= 75)
-            rank = "Master";
+    playerRank.textContent =
+        game.player.title;
 
-        if (game.level >= 100)
-            rank = "Legend";
+    profileLevel.textContent =
+        `Level ${game.level}`;
 
-        if (game.level >= 125)
-            rank = "Mythic";
+    profileXP.textContent =
+        `${Math.floor(game.totalLifetimeXP)} XP`;
 
-        if (game.level >= 150)
-            rank = "Life Buff God";
+    profileXPFill.style.width =
+        `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
 
-        game.player.title = rank;
+    profileXPProgress.textContent =
+        `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
 
-        // Unlock avatars by level
+}
 
-        if (game.level >= 150)
-            game.player.avatar = "👑";
+// ===========================
+// CHANGE PLAYER NAME
+// ===========================
 
-        else if (game.level >= 100)
-            game.player.avatar = "🐉";
-
-        else if (game.level >= 75)
-            game.player.avatar = "🧙";
-
-        else if (game.level >= 50)
-            game.player.avatar = "⚔️";
-
-        else if (game.level >= 30)
-            game.player.avatar = "🛡️";
-
-        else if (game.level >= 20)
-            game.player.avatar = "🏹";
-
-        else if (game.level >= 10)
-            game.player.avatar = "🧑‍🚀";
-
-        else if (game.level >= 5)
-            game.player.avatar = "😎";
-
-        else
-            game.player.avatar = "😀";
-
-    playerAvatar.textContent = game.player.avatar;
-
-        playerName.textContent =
-            game.player.name;
-
-        playerTitle.textContent =
-            game.player.title;
-
-        playerLevel.textContent =
-            `Level ${game.level}`;
-
-        playerXP.textContent =
-            `${Math.floor(game.totalLifetimeXP)} XP`;
-
-        profileXPFill.style.width =
-            `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
-
-        profileXPProgress.textContent =
-            `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
-
-    function changePlayerName() {
+function changePlayerName() {
 
     const newName = prompt(
 
@@ -269,7 +251,7 @@ function updateStatisticsUI() {
 
     );
 
-    if (!newName) return;
+    if (!newName || !newName.trim()) return;
 
     game.player.name = newName.trim();
 
@@ -277,10 +259,8 @@ function updateStatisticsUI() {
 
     saveGame();
 
-}
-
-}
-
+    }
+    
 // ===========================
 // OPEN MODAL
 // ===========================
@@ -328,6 +308,10 @@ function refreshDashboard() {
     updatePlayerProfile();
 
 }
+
+// ===========================
+// BUTTON EVENTS
+// ===========================
 
 changeNameBtn.addEventListener("click", () => {
 
