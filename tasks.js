@@ -49,9 +49,7 @@ function startTask() {
 
     if (game.timer !== null) {
 
-        clearInterval(game.timer);
-
-        game.timer = null;
+        return;
 
     }
 
@@ -116,17 +114,7 @@ function startTask() {
 
         game.timer = null;
 
-    }
-
-    // Count completed task session
-    if (
-        currentTask !== null &&
-        game.tasks[currentTask].seconds > 0
-    ) {
-
-        game.stats.totalTasksCompleted++
-
-    }
+    } 
 
     // Find favorite task
     let highestSeconds = 0;
@@ -158,9 +146,7 @@ function startTask() {
 // ===========================
 
 function closeTask() {
-
-    pauseTask();
-
+ 
     hideTaskModal();
 
 }
