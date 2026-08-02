@@ -45,54 +45,57 @@ function startTask() {
 
     if (currentTask === null) return;
 
-    // Stop previous timer
+    const taskName = currentTask;
 
-    if (game.timer !== null) {
+    const task = game.tasks[taskName];
 
-        return;
+    if (task.isRunning) return;
 
-    }
+    task.isRunning = true;
 
-    game.activeTask = currentTask;
-
-    game.timer = setInterval(() => {
-
-        const task = game.tasks[game.activeTask];
+    task.timer = setInterval(() => {
 
         task.seconds++;
 
-        const gainedXP = xpRates[game.activeTask] / 3600;
+        const gainedXP = xpRates[taskName] / 3600;
 
         task.xp += gainedXP;
 
         addXP(gainedXP);
 
         checkAchievements();
+
         updateAchievementCounter();
 
         game.stats.totalHours += 1 / 3600;
 
         let highestHours = 0;
 
-    for (const taskName in game.tasks) {
+        for (const taskName in game.tasks) {
 
-    const hours = game.tasks[taskName].seconds / 3600;
+            const hours = game.tasks[taskName].seconds / 3600;
 
-    if (hours > highestHours) {
+            if (hours > highestHours) {
 
-        highestHours = hours;
+                highestHours = hours;
 
-        game.stats.favoriteTask = taskName;
+                game.stats.favoriteTask = taskName;
+
+            }
+
+        }
+
+        if (highestHours > game.stats.bestTaskHours) {
+
+            game.stats.bestTaskHours = highestHours;
+
+        }
+
+        if (currentTask === taskName) {
+
+        updateTaskUI(taskName);
 
     }
-
-}
-
-    if (highestHours > game.stats.bestTaskHours) {
-
-    game.stats.bestTaskHours = highestHours;
-
-}
 
         refreshDashboard();
 
@@ -106,34 +109,19 @@ function startTask() {
 // PAUSE TASK
 // ===========================
 
-    function pauseTask() {
+function pauseTask() {
 
-    if (game.timer !== null) {
+    if (currentTask === null) return;
 
-        clearInterval(game.timer);
+    const task = game.tasks[taskName];
 
-        game.timer = null;
+    if (!task.isRunning) return;
 
-    } 
+    clearInterval(task.timer);
 
-    // Find favorite task
-    let highestSeconds = 0;
+    task.timer = null;
 
-    for (const taskName in game.tasks) {
-
-        if (game.tasks[taskName].seconds > highestSeconds) {
-
-            highestSeconds = game.tasks[taskName].seconds;
-
-            game.stats.favoriteTask = taskName;
-
-        }
-
-    }
-
-    game.activeTask = null;
-
-    currentTask = null;
+    task.isRunning = false;
 
     refreshDashboard();
 

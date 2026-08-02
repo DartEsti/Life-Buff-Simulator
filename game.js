@@ -41,7 +41,7 @@ const game = {
 
     currentXP: 0,
 
-     totalLifetimeXP: 0,
+    totalLifetimeXP: 0,
 
     // ===========================
     // PLAYER PROFILE
@@ -58,11 +58,7 @@ const game = {
     },
 
     maxXP: XP_PER_LEVEL,
-
-    activeTask: null,
-
-    timer: null,
-
+ 
     lastResetDate: null,
 
     // =======================================
@@ -95,7 +91,11 @@ const game = {
 
             seconds: 0,
 
-            xp: 0
+            xp: 0,
+
+            timer: null,
+
+            isRunning: false
 
         },
 
@@ -103,7 +103,11 @@ const game = {
 
             seconds: 0,
 
-            xp: 0
+            xp: 0,
+
+            timer: null,
+
+            isRunning: false
 
         },
 
@@ -111,7 +115,11 @@ const game = {
 
             seconds: 0,
 
-            xp: 0
+            xp: 0,
+
+            timer: null,
+
+            isRunning: false
 
         },
 
@@ -119,7 +127,11 @@ const game = {
 
             seconds: 0,
 
-            xp: 0
+            xp: 0,
+
+            timer: null,
+
+            isRunning: false
 
         },
 
@@ -127,7 +139,11 @@ const game = {
 
             seconds: 0,
 
-            xp: 0
+            xp: 0,
+
+            timer: null,
+
+            isRunning: false
 
         }
 

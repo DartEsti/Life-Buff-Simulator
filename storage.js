@@ -29,6 +29,14 @@ const STORAGE_KEYS = {
 
 function saveGame() {
 
+    const tasks = structuredClone(game.tasks);
+
+    for (const taskName in tasks) {
+
+    tasks[taskName].timer = null;
+
+}
+
     const saveData = {
 
          level: game.level,
@@ -38,10 +46,8 @@ function saveGame() {
         maxXP: game.maxXP,
 
         lastResetDate: game.lastResetDate,
-
-        activeTask: game.activeTask,
-
-        tasks: game.tasks,
+ 
+        tasks: tasks,
 
         isClockedIn: isClockedIn,
 
@@ -99,9 +105,7 @@ function loadGame() {
         game.maxXP = data.maxXP ?? XP_PER_LEVEL;
 
         game.lastResetDate = data.lastResetDate ?? null;
-
-        game.activeTask = data.activeTask ?? null;
-
+        
         game.tasks = data.tasks ?? game.tasks;
 
         isClockedIn = data.isClockedIn ?? false;
@@ -114,6 +118,46 @@ function loadGame() {
 
         clockInBtn.disabled = isClockedIn;
         clockOutBtn.disabled = !isClockedIn;
+
+        for (const taskName in game.tasks) {
+
+        const task = game.tasks[taskName];
+
+        if (task.isRunning) {
+
+            const task = game.tasks[taskName];
+
+        task.timer = setInterval(() => {
+
+            task.seconds++;
+
+            const gainedXP = xpRates[taskName] / 3600;
+
+            task.xp += gainedXP;
+
+            addXP(gainedXP);
+
+            game.stats.totalHours += 1 / 3600;
+
+            checkAchievements();
+
+            updateAchievementCounter();
+
+            if (currentTask === taskName) {
+
+                updateTaskUI(taskName);
+
+            }
+
+            refreshDashboard();
+
+            saveGame();
+
+        }, 1000);
+
+        }
+
+    }
 
         refreshDashboard();
 
@@ -337,7 +381,21 @@ function saveLastPlayedDate() {
 
 function resetDailyData() {
 
-    pauseTask();
+    for (const taskName in game.tasks) {
+
+    const task = game.tasks[taskName];
+
+    if (task.timer) {
+
+        clearInterval(task.timer);
+
+        task.timer = null;
+
+    }
+
+    task.isRunning = false;
+
+}
 
     let totalSeconds = 0;
 
@@ -365,9 +423,10 @@ function resetDailyData() {
 
         game.tasks[task].seconds = 0;
         game.tasks[task].xp = 0;
+        game.tasks[task].timer = null;
+        game.tasks[task].isRunning = false;
 
-    }
-
+}
     isClockedIn = false;
 
     clockInDisplay.textContent = "--:--";
