@@ -1,6 +1,6 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 1.0
+// Version 1.0 Stable
 // game.js
 // Core Game Logic
 // ===========================================
@@ -37,11 +37,19 @@ const xpRates = {
 
 const game = {
 
+    // ===========================
+    // PLAYER PROGRESSION
+    // ===========================
+
     level: 1,
 
     currentXP: 0,
 
     totalLifetimeXP: 0,
+
+    maxXP: XP_PER_LEVEL,
+
+    lastResetDate: null,
 
     // ===========================
     // PLAYER PROFILE
@@ -57,13 +65,9 @@ const game = {
 
     },
 
-    maxXP: XP_PER_LEVEL,
- 
-    lastResetDate: null,
-
-    // =======================================
-    // PLAYER STATISTICS
-    // =======================================
+    // ===========================
+    // LIFETIME STATISTICS
+    // ===========================
 
     stats: {
 
@@ -81,9 +85,13 @@ const game = {
 
     },
 
-    // =======================================
+    // ===========================
     // TASK DATA
-    // =======================================
+    // ===========================
+
+// =======================================
+// TASK DATA
+// =======================================
 
     tasks: {
 
@@ -95,7 +103,9 @@ const game = {
 
             timer: null,
 
-            isRunning: false
+            isRunning: false,
+
+            completedToday: false
 
         },
 
@@ -107,7 +117,9 @@ const game = {
 
             timer: null,
 
-            isRunning: false
+            isRunning: false,
+
+            completedToday: false
 
         },
 
@@ -119,7 +131,9 @@ const game = {
 
             timer: null,
 
-            isRunning: false
+            isRunning: false,
+
+            completedToday: false
 
         },
 
@@ -131,7 +145,9 @@ const game = {
 
             timer: null,
 
-            isRunning: false
+            isRunning: false,
+
+            completedToday: false
 
         },
 
@@ -143,7 +159,9 @@ const game = {
 
             timer: null,
 
-            isRunning: false
+            isRunning: false,
+
+            completedToday: false
 
         }
 
@@ -152,10 +170,32 @@ const game = {
 };
 
 // ===========================================
-// CURRENT TASK
+// CURRENTLY OPEN TASK
 // ===========================================
 
 let currentTask = null;
+
+// ===========================================
+// TASK TEMPLATE
+// ===========================================
+
+function createTask() {
+
+    return {
+
+        seconds: 0,
+
+        xp: 0,
+
+        timer: null,
+
+        isRunning: false,
+
+        completedToday: false
+
+    };
+
+}
 
 // ===========================================
 // ADD XP
@@ -166,7 +206,7 @@ function addXP(amount) {
     game.currentXP += amount;
 
     game.totalLifetimeXP += amount;
- 
+
     while (
 
         game.currentXP >= XP_PER_LEVEL &&
@@ -198,7 +238,7 @@ function addXP(amount) {
     }
 
     refreshDashboard();
- 
+
 }
 
 // ===========================================
@@ -217,11 +257,7 @@ function levelUp() {
 
 function formatTime(totalSeconds) {
 
-    const hours = Math.floor(
-
-        totalSeconds / 3600
-
-    );
+    const hours = Math.floor(totalSeconds / 3600);
 
     const minutes = Math.floor(
 
@@ -232,6 +268,62 @@ function formatTime(totalSeconds) {
     const seconds = totalSeconds % 60;
 
     return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+}
+
+// ===========================================
+// GET TOTAL PRODUCTIVE SECONDS
+// ===========================================
+
+function getTotalProductiveSeconds() {
+
+    let total = 0;
+
+    for (const taskName in game.tasks) {
+
+        total += game.tasks[taskName].seconds;
+
+    }
+
+    return total;
+
+}
+
+// ===========================================
+// GET TOTAL PRODUCTIVE HOURS
+// ===========================================
+
+function getTotalProductiveHours() {
+
+    return getTotalProductiveSeconds() / 3600;
+
+}
+
+// ===========================================
+// FIND FAVORITE TASK
+// ===========================================
+
+function updateFavoriteTask() {
+
+    let highestSeconds = 0;
+
+    let favorite = "None";
+
+    for (const taskName in game.tasks) {
+
+        if (game.tasks[taskName].seconds > highestSeconds) {
+
+            highestSeconds = game.tasks[taskName].seconds;
+
+            favorite = taskName;
+
+        }
+
+    }
+
+    game.stats.favoriteTask = favorite;
+
+    game.stats.bestTaskHours = highestSeconds / 3600;
 
 }
 
@@ -265,7 +357,97 @@ function showLevelUpAnimation() {
 
     }, 2000);
 
-}   
+}
+
+// ===========================================
+// RESET ALL TASK TIMERS
+// ===========================================
+
+function stopAllTaskTimers() {
+
+    for (const taskName in game.tasks) {
+
+        const task = game.tasks[taskName];
+
+        if (task.timer !== null) {
+
+            clearInterval(task.timer);
+
+            task.timer = null;
+
+        }
+
+        task.isRunning = false;
+
+    }
+
+}
+
+// ===========================================
+// RESET DAILY TASK DATA
+// ===========================================
+
+function resetTaskProgress() {
+
+    stopAllTaskTimers();
+
+    for (const taskName in game.tasks) {
+
+        game.tasks[taskName] = createTask();
+
+    }
+
+    currentTask = null;
+
+}
+
+// ===========================================
+// CHECK IF ANY TASK IS RUNNING
+// ===========================================
+
+function isAnyTaskRunning() {
+
+    for (const taskName in game.tasks) {
+
+        if (game.tasks[taskName].isRunning) {
+
+            return true;
+
+        }
+
+    }
+
+    return false;
+
+}
+
+// ===========================================
+// GET RUNNING TASKS
+// ===========================================
+
+function getRunningTasks() {
+
+    return Object.keys(game.tasks).filter(
+
+        taskName => game.tasks[taskName].isRunning
+
+    );
+
+}
+
+// ===========================================
+// SAVE DASHBOARD
+// ===========================================
+
+function updateGameState() {
+
+    updateFavoriteTask();
+
+    refreshDashboard();
+
+    saveGame();
+
+}
 
 // ===========================================
 // END OF FILE

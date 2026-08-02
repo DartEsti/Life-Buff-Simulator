@@ -1,19 +1,25 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 1.0
+// Version 2.0
 // tasks.js
-// Task System
+// Multi-Task System
 // ===========================================
 
 // ===========================
 // DOM ELEMENTS
 // ===========================
 
-const cards = document.querySelectorAll(".task-card");
+const cards =
+    document.querySelectorAll(".task-card");
 
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const closeBtn = document.querySelector(".close");
+const startBtn =
+    document.getElementById("startBtn");
+
+const pauseBtn =
+    document.getElementById("pauseBtn");
+
+const closeBtn =
+    document.querySelector(".close");
 
 // ===========================
 // OPEN TASK
@@ -43,13 +49,19 @@ function startTask() {
 
     }
 
-    if (currentTask === null) return;
+    if (currentTask === null)
+        return;
 
-    const taskName = currentTask;
+    const taskName =
+        currentTask;
 
-    const task = game.tasks[taskName];
+    const task =
+        game.tasks[taskName];
 
-    if (task.isRunning) return;
+    // Prevent duplicate timers
+
+    if (task.isRunning)
+        return;
 
     task.isRunning = true;
 
@@ -57,45 +69,72 @@ function startTask() {
 
         task.seconds++;
 
-        const gainedXP = xpRates[taskName] / 3600;
+        const gainedXP =
+            xpRates[taskName] / 3600;
 
         task.xp += gainedXP;
 
         addXP(gainedXP);
 
-        checkAchievements();
+        game.stats.totalHours +=
+            1 / 3600;
 
-        updateAchievementCounter();
+        // ===========================
+        // Favorite Task
+        // ===========================
 
-        game.stats.totalHours += 1 / 3600;
+        let highestSeconds = 0;
 
-        let highestHours = 0;
+        for (const name in game.tasks) {
 
-        for (const taskName in game.tasks) {
+            if (
+                game.tasks[name].seconds >
+                highestSeconds
+            ) {
 
-            const hours = game.tasks[taskName].seconds / 3600;
+                highestSeconds =
+                    game.tasks[name].seconds;
 
-            if (hours > highestHours) {
-
-                highestHours = hours;
-
-                game.stats.favoriteTask = taskName;
+                game.stats.favoriteTask =
+                    name;
 
             }
 
         }
 
-        if (highestHours > game.stats.bestTaskHours) {
+        if (
+            highestSeconds / 3600 >
+            game.stats.bestTaskHours
+        ) {
 
-            game.stats.bestTaskHours = highestHours;
+            game.stats.bestTaskHours =
+                highestSeconds / 3600;
 
         }
 
-        if (currentTask === taskName) {
+        // ===========================
+        // Update only the opened task
+        // ===========================
 
-        updateTaskUI(taskName);
+        if (
+            currentTask === taskName
+        ) {
 
-    }
+            updateTaskUI(taskName);
+
+        }
+
+        // ===========================
+        // Achievements
+        // ===========================
+
+        checkAchievements();
+
+        updateAchievementCounter();
+
+        // ===========================
+        // Dashboard
+        // ===========================
 
         refreshDashboard();
 
@@ -103,7 +142,7 @@ function startTask() {
 
     }, 1000);
 
-}
+} 
 
 // ===========================
 // PAUSE TASK
@@ -111,11 +150,14 @@ function startTask() {
 
 function pauseTask() {
 
-    if (currentTask === null) return;
+    if (currentTask === null)
+        return;
 
-    const task = game.tasks[taskName];
+    const task =
+        game.tasks[currentTask];
 
-    if (!task.isRunning) return;
+    if (!task.isRunning)
+        return;
 
     clearInterval(task.timer);
 
@@ -123,19 +165,64 @@ function pauseTask() {
 
     task.isRunning = false;
 
+    // ===========================
+    // Count completed task once
+    // ===========================
+
+    if (!task.completedToday) {
+
+        task.completedToday = true;
+
+        game.stats.totalTasksCompleted++;
+
+    }
+
+    // ===========================
+    // Find Favorite Task
+    // ===========================
+
+    let highestSeconds = 0;
+
+    for (const taskName in game.tasks) {
+
+        if (
+            game.tasks[taskName].seconds >
+            highestSeconds
+        ) {
+
+            highestSeconds =
+                game.tasks[taskName].seconds;
+
+            game.stats.favoriteTask =
+                taskName;
+
+        }
+
+    }
+
+    game.stats.bestTaskHours =
+        highestSeconds / 3600;
+
+    updateTaskUI(currentTask);
+
     refreshDashboard();
 
     saveGame();
 
 }
- 
+
 // ===========================
 // CLOSE TASK
 // ===========================
 
 function closeTask() {
- 
+
+    // DO NOT pause the timer.
+    // Just close the window.
+
     hideTaskModal();
+
+    currentTask = null;
 
 }
 
@@ -154,7 +241,7 @@ cards.forEach(card => {
 });
 
 // ===========================
-// BUTTON EVENTS
+// START BUTTON
 // ===========================
 
 startBtn.addEventListener("click", () => {
@@ -163,11 +250,19 @@ startBtn.addEventListener("click", () => {
 
 });
 
+// ===========================
+// PAUSE BUTTON
+// ===========================
+
 pauseBtn.addEventListener("click", () => {
 
     pauseTask();
 
 });
+
+// ===========================
+// CLOSE BUTTON
+// ===========================
 
 closeBtn.addEventListener("click", () => {
 
@@ -179,7 +274,7 @@ closeBtn.addEventListener("click", () => {
 // CLICK OUTSIDE MODAL
 // ===========================
 
-window.addEventListener("click", (event) => {
+window.addEventListener("click", event => {
 
     if (event.target === modal) {
 
@@ -188,6 +283,75 @@ window.addEventListener("click", (event) => {
     }
 
 });
+
+// ===========================
+// RESTORE RUNNING TASKS
+// ===========================
+
+function restoreRunningTasks() {
+
+    for (const taskName in game.tasks) {
+
+        const task = game.tasks[taskName];
+
+        if (!task.isRunning)
+            continue;
+
+        task.timer = setInterval(() => {
+
+            task.seconds++;
+
+            const gainedXP =
+                xpRates[taskName] / 3600;
+
+            task.xp += gainedXP;
+
+            addXP(gainedXP);
+
+            game.stats.totalHours +=
+                1 / 3600;
+
+            let highestSeconds = 0;
+
+            for (const name in game.tasks) {
+
+                if (
+                    game.tasks[name].seconds >
+                    highestSeconds
+                ) {
+
+                    highestSeconds =
+                        game.tasks[name].seconds;
+
+                    game.stats.favoriteTask =
+                        name;
+
+                }
+
+            }
+
+            game.stats.bestTaskHours =
+                highestSeconds / 3600;
+
+            if (currentTask === taskName) {
+
+                updateTaskUI(taskName);
+
+            }
+
+            checkAchievements();
+
+            updateAchievementCounter();
+
+            refreshDashboard();
+
+            saveGame();
+
+        }, 1000);
+
+    }
+
+}
 
 // ===========================================
 // END OF FILE

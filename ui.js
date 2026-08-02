@@ -1,25 +1,44 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 1.0
+// Version 2.0
 // ui.js
 // User Interface
 // ===========================================
 
 // ===========================
-// DOM ELEMENTS
+// TASK MODAL
 // ===========================
 
-const modal = document.getElementById("taskModal");
+const modal =
+    document.getElementById("taskModal");
 
-const taskTitle = document.getElementById("taskTitle");
-const taskXP = document.getElementById("taskXP");
-const taskHours = document.getElementById("taskHours");
-const timerDisplay = document.getElementById("timer");
-const xpRateDisplay = document.getElementById("xpRate");
+const taskTitle =
+    document.getElementById("taskTitle");
 
-const levelDisplay = document.getElementById("levelDisplay");
-const totalXPDisplay = document.getElementById("totalXP");
-const xpFill = document.getElementById("xpFill");
+const taskXP =
+    document.getElementById("taskXP");
+
+const taskHours =
+    document.getElementById("taskHours");
+
+const timerDisplay =
+    document.getElementById("timer");
+
+const xpRateDisplay =
+    document.getElementById("xpRate");
+
+// ===========================
+// MAIN DASHBOARD
+// ===========================
+
+const levelDisplay =
+    document.getElementById("levelDisplay");
+
+const totalXPDisplay =
+    document.getElementById("totalXP");
+
+const xpFill =
+    document.getElementById("xpFill");
 
 const workedHoursDisplay =
     document.getElementById("workedHours");
@@ -55,20 +74,13 @@ const statsDaysPlayed =
 
 const changeNameBtn =
     document.getElementById("changeNameBtn");
-
-const profileXPFill =
-    document.getElementById("profileXPFill");
-
-const profileXPProgress =
-    document.getElementById("profileXPProgress");
-
+ 
 const playerAvatar =
     document.getElementById("playerAvatar");
 
 const playerName =
     document.getElementById("playerName");
-
-// Fixed IDs
+ 
 const playerRank =
     document.getElementById("playerRank");
 
@@ -77,6 +89,41 @@ const profileLevel =
 
 const profileXP =
     document.getElementById("profileXP");
+
+const profileXPFill =
+    document.getElementById("profileXPFill");
+
+const profileXPProgress =
+    document.getElementById("profileXPProgress");
+
+// ===========================
+// CHECK IMPORTANT ELEMENTS
+// ===========================
+
+const requiredElements = [
+
+    playerAvatar,
+    playerName,
+    playerRank,
+    profileLevel,
+    profileXP,
+    profileXPFill,
+    profileXPProgress
+
+];
+
+requiredElements.forEach(element => {
+
+    if (!element) {
+
+        console.error(
+            "Missing UI element.",
+            element
+        );
+
+    }
+
+});
 
 // ===========================
 // UPDATE LEVEL UI
@@ -92,8 +139,100 @@ function updateLevelUI() {
 
     xpFill.style.width =
         `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
+ 
 
 }
+
+// ===========================
+// UPDATE PLAYER PROFILE
+// ===========================
+
+function updatePlayerProfile() {
+
+    let rank = "Beginner";
+
+    if (game.level >= 5)
+        rank = "Novice";
+
+    if (game.level >= 10)
+        rank = "Adventurer";
+
+    if (game.level >= 20)
+        rank = "Explorer";
+
+    if (game.level >= 30)
+        rank = "Veteran";
+
+    if (game.level >= 50)
+        rank = "Elite";
+
+    if (game.level >= 75)
+        rank = "Master";
+
+    if (game.level >= 100)
+        rank = "Legend";
+
+    if (game.level >= 125)
+        rank = "Mythic";
+
+    if (game.level >= 150)
+        rank = "Life Buff God";
+
+    game.player.title = rank;
+
+    // ===========================
+    // AVATAR UNLOCKS
+    // ===========================
+
+    if (game.level >= 150)
+        game.player.avatar = "👑";
+
+    else if (game.level >= 100)
+        game.player.avatar = "🐉";
+
+    else if (game.level >= 75)
+        game.player.avatar = "🧙";
+
+    else if (game.level >= 50)
+        game.player.avatar = "⚔️";
+
+    else if (game.level >= 30)
+        game.player.avatar = "🛡️";
+
+    else if (game.level >= 20)
+        game.player.avatar = "🏹";
+
+    else if (game.level >= 10)
+        game.player.avatar = "🧑‍🚀";
+
+    else if (game.level >= 5)
+        game.player.avatar = "😎";
+
+    else
+        game.player.avatar = "😀";
+
+    playerAvatar.textContent =
+        game.player.avatar;
+
+    playerName.textContent =
+        game.player.name;
+
+    playerRank.textContent =
+        game.player.title;
+
+    profileLevel.textContent =
+        `Level ${game.level}`;
+
+    profileXP.textContent =
+        `${Math.floor(game.totalLifetimeXP)} XP`;
+
+    profileXPFill.style.width =
+        `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
+
+    profileXPProgress.textContent =
+        `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
+
+} 
 
 // ===========================
 // UPDATE TASK UI
@@ -101,7 +240,11 @@ function updateLevelUI() {
 
 function updateTaskUI(taskName) {
 
+    if (!taskName) return;
+
     const task = game.tasks[taskName];
+
+    if (!task) return;
 
     taskTitle.textContent =
         taskName;
@@ -128,10 +271,10 @@ function updateProductivity() {
 
     let totalSeconds = 0;
 
-    for (const task in game.tasks) {
+    for (const taskName in game.tasks) {
 
         totalSeconds +=
-            game.tasks[task].seconds;
+            game.tasks[taskName].seconds;
 
     }
 
@@ -150,87 +293,28 @@ function updateProductivity() {
 }
 
 // ===========================
-// UPDATE STATISTICS UI
+// UPDATE STATISTICS
 // ===========================
 
 function updateStatisticsUI() {
 
     statsLifetimeXP.textContent =
-        `${(game.totalLifetimeXP ?? 0).toFixed(0)} XP`;
+        `${Math.floor(game.totalLifetimeXP)} XP`;
 
     statsTotalHours.textContent =
-        `${(game.stats.totalHours ?? 0).toFixed(2)} Hours`;
+        `${game.stats.totalHours.toFixed(2)} Hours`;
 
     statsTasksCompleted.textContent =
-        game.stats.totalTasksCompleted ?? 0;
+        game.stats.totalTasksCompleted;
 
     statsFavoriteTask.textContent =
-        game.stats.favoriteTask ?? "None";
+        game.stats.favoriteTask;
 
     statsCurrentStreak.textContent =
-        `${game.stats.currentStreak ?? 0} Days`;
+        `${game.stats.currentStreak} Days`;
 
     statsDaysPlayed.textContent =
-        game.stats.daysPlayed ?? 0;
-
-}
-
-// ===========================
-// UPDATE PLAYER PROFILE
-// ===========================
-
-function updatePlayerProfile() {
-
-    let rank = "Beginner";
-
-    if (game.level >= 5) rank = "Novice";
-    if (game.level >= 10) rank = "Adventurer";
-    if (game.level >= 20) rank = "Explorer";
-    if (game.level >= 30) rank = "Veteran";
-    if (game.level >= 50) rank = "Elite";
-    if (game.level >= 75) rank = "Master";
-    if (game.level >= 100) rank = "Legend";
-    if (game.level >= 125) rank = "Mythic";
-    if (game.level >= 150) rank = "Life Buff God";
-
-    game.player.title = rank;
-
-    if (game.level >= 150)
-        game.player.avatar = "👑";
-    else if (game.level >= 100)
-        game.player.avatar = "🐉";
-    else if (game.level >= 75)
-        game.player.avatar = "🧙";
-    else if (game.level >= 50)
-        game.player.avatar = "⚔️";
-    else if (game.level >= 30)
-        game.player.avatar = "🛡️";
-    else if (game.level >= 20)
-        game.player.avatar = "🏹";
-    else if (game.level >= 10)
-        game.player.avatar = "🧑‍🚀";
-    else if (game.level >= 5)
-        game.player.avatar = "😎";
-    else
-        game.player.avatar = "😀";
-
-    playerAvatar.textContent =
-        game.player.avatar;
-
-    playerName.textContent =
-        game.player.name;
-
-    playerTitle.textContent = game.player.title;
-
-    playerLevel.textContent = `Level ${game.level}`;
-
-    playerXP.textContent = `${Math.floor(game.totalLifetimeXP)} XP`;
-
-    profileXPFill.style.width =
-        `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
-
-    profileXPProgress.textContent =
-        `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
+        game.stats.daysPlayed;
 
 }
 
@@ -241,23 +325,41 @@ function updatePlayerProfile() {
 function changePlayerName() {
 
     const newName = prompt(
-
-        "Enter your new player name:",
-
-        game.player.name
-
+         "Enter your new player name:",
+         game.player.name
     );
 
-    if (!newName || !newName.trim()) return;
+    if (newName === null)
+        return;
 
-    game.player.name = newName.trim();
+    const trimmedName =
+        newName.trim();
+
+    if (trimmedName.length === 0)
+        return;
+
+    game.player.name =
+        trimmedName;
 
     updatePlayerProfile();
 
     saveGame();
 
-    }
-    
+}
+
+// ===========================
+// TASK REFRESH
+// ===========================
+
+function refreshCurrentTask() {
+
+    if (currentTask === null)
+        return;
+
+    updateTaskUI(currentTask);
+
+} 
+
 // ===========================
 // OPEN MODAL
 // ===========================
@@ -275,20 +377,8 @@ function showTaskModal() {
 function hideTaskModal() {
 
     modal.style.display = "none";
-
-}
-
-// ===========================
-// REFRESH CURRENT TASK
-// ===========================
-
-function refreshCurrentTask() {
-
-    if (currentTask === null) return;
-
-    updateTaskUI(currentTask);
-
-}
+ 
+} 
 
 // ===========================
 // REFRESH DASHBOARD
@@ -304,17 +394,66 @@ function refreshDashboard() {
 
     updatePlayerProfile();
 
+    refreshCurrentTask();
+
 }
 
 // ===========================
 // BUTTON EVENTS
 // ===========================
 
-changeNameBtn.addEventListener("click", () => {
+if (changeNameBtn) {
 
-    changePlayerName();
+    changeNameBtn.addEventListener(
+        "click",
+        changePlayerName
+    );
+
+}
+
+// ===========================
+// CLOSE MODAL BUTTON
+// ===========================
+
+const closeButton =
+    document.querySelector(".close");
+
+if (closeButton) {
+
+    closeButton.addEventListener(
+        "click",
+        hideTaskModal
+    );
+
+}
+
+// ===========================
+// CLICK OUTSIDE MODAL
+// ===========================
+
+window.addEventListener("click", event => {
+
+    if (event.target === modal) {
+
+        hideTaskModal();
+
+    }
 
 });
+
+// ===========================
+// LIVE UI REFRESH
+// ===========================
+
+// Refresh the currently opened task every second.
+// This keeps the timer updating while the modal
+// stays open, even when multiple tasks are running.
+
+setInterval(() => {
+
+    refreshCurrentTask();
+
+}, 1000);
 
 // ===========================================
 // END OF FILE
