@@ -2,15 +2,14 @@
 // LIFE BUFF SIMULATOR
 // Version 2.0
 // tasks.js
-// Multi-Task System
+// Multi Task System
 // ===========================================
 
 // ===========================
 // DOM ELEMENTS
 // ===========================
 
-const cards =
-    document.querySelectorAll(".task-card");
+const cards = document.querySelectorAll(".task-card");
 
 const startBtn =
     document.getElementById("startBtn");
@@ -22,7 +21,7 @@ const closeBtn =
     document.querySelector(".close");
 
 // ===========================
-// OPEN TASK
+// CURRENT OPENED TASK
 // ===========================
 
 function openTask(taskName) {
@@ -49,19 +48,22 @@ function startTask() {
 
     }
 
-    if (currentTask === null)
-        return;
+    if (currentTask === null) return;
 
-    const taskName =
-        currentTask;
+    startTaskTimer(currentTask);
 
-    const task =
-        game.tasks[taskName];
+}
 
-    // Prevent duplicate timers
+// ===========================
+// START TASK TIMER
+// ===========================
 
-    if (task.isRunning)
-        return;
+function startTaskTimer(taskName) {
+
+    const task = game.tasks[taskName];
+
+    // Already running?
+    if (task.isRunning) return;
 
     task.isRunning = true;
 
@@ -79,131 +81,57 @@ function startTask() {
         game.stats.totalHours +=
             1 / 3600;
 
-        // ===========================
-        // Favorite Task
-        // ===========================
-
-        let highestSeconds = 0;
-
-        for (const name in game.tasks) {
-
-            if (
-                game.tasks[name].seconds >
-                highestSeconds
-            ) {
-
-                highestSeconds =
-                    game.tasks[name].seconds;
-
-                game.stats.favoriteTask =
-                    name;
-
-            }
-
-        }
-
-        if (
-            highestSeconds / 3600 >
-            game.stats.bestTaskHours
-        ) {
-
-            game.stats.bestTaskHours =
-                highestSeconds / 3600;
-
-        }
-
-        // ===========================
-        // Update only the opened task
-        // ===========================
-
-        if (
-            currentTask === taskName
-        ) {
-
-            updateTaskUI(taskName);
-
-        }
-
-        // ===========================
-        // Achievements
-        // ===========================
-
         checkAchievements();
 
         updateAchievementCounter();
 
-        // ===========================
-        // Dashboard
-        // ===========================
+        updateFavoriteTask();
 
+        updateBestTask();
+
+        // Only refresh the timer on the
+        // currently opened modal
+        if (currentTask === taskName) {
+
+            updateTaskUI(taskName);
+
+         }
+ 
         refreshDashboard();
 
         saveGame();
 
     }, 1000);
 
-} 
-
-// ===========================
+}
+ 
+ // ===========================
 // PAUSE TASK
 // ===========================
 
 function pauseTask() {
 
-    if (currentTask === null)
-        return;
+    if (currentTask === null) return;
 
-    const task =
-        game.tasks[currentTask];
+    pauseTaskTimer(currentTask);
 
-    if (!task.isRunning)
-        return;
+}
+
+// ===========================
+// PAUSE TASK TIMER
+// ===========================
+
+function pauseTaskTimer(taskName) {
+
+    const task = game.tasks[taskName];
+
+    if (!task.isRunning) return;
 
     clearInterval(task.timer);
 
     task.timer = null;
 
     task.isRunning = false;
-
-    // ===========================
-    // Count completed task once
-    // ===========================
-
-    if (!task.completedToday) {
-
-        task.completedToday = true;
-
-        game.stats.totalTasksCompleted++;
-
-    }
-
-    // ===========================
-    // Find Favorite Task
-    // ===========================
-
-    let highestSeconds = 0;
-
-    for (const taskName in game.tasks) {
-
-        if (
-            game.tasks[taskName].seconds >
-            highestSeconds
-        ) {
-
-            highestSeconds =
-                game.tasks[taskName].seconds;
-
-            game.stats.favoriteTask =
-                taskName;
-
-        }
-
-    }
-
-    game.stats.bestTaskHours =
-        highestSeconds / 3600;
-
-    updateTaskUI(currentTask);
 
     refreshDashboard();
 
@@ -212,13 +140,82 @@ function pauseTask() {
 }
 
 // ===========================
+// RESTORE RUNNING TASKS
+// ===========================
+
+function restoreRunningTasks() {
+
+    for (const taskName in game.tasks) {
+
+        const task = game.tasks[taskName];
+
+        if (task.isRunning) {
+
+            startTaskTimer(taskName);
+
+        }
+
+    }
+
+}
+
+// ===========================
+// FAVORITE TASK
+// ===========================
+
+function updateFavoriteTask() {
+
+    let favorite = "None";
+
+    let highestSeconds = 0;
+
+    for (const taskName in game.tasks) {
+
+        if (game.tasks[taskName].seconds > highestSeconds) {
+
+            highestSeconds =
+                game.tasks[taskName].seconds;
+
+            favorite = taskName;
+
+        }
+
+    }
+
+    game.stats.favoriteTask = favorite;
+
+}
+
+// ===========================
+// BEST TASK
+// ===========================
+
+function updateBestTask() {
+
+    let highestHours = 0;
+
+    for (const taskName in game.tasks) {
+
+        const hours =
+            game.tasks[taskName].seconds / 3600;
+
+        if (hours > highestHours) {
+
+            highestHours = hours;
+
+        }
+
+    }
+
+    game.stats.bestTaskHours = highestHours;
+
+}
+
+// ===========================
 // CLOSE TASK
 // ===========================
 
-function closeTask() {
-
-    // DO NOT pause the timer.
-    // Just close the window.
+ function closeTask() {
 
     hideTaskModal();
 
@@ -241,29 +238,21 @@ cards.forEach(card => {
 });
 
 // ===========================
-// START BUTTON
+// BUTTON EVENTS
 // ===========================
 
 startBtn.addEventListener("click", () => {
 
     startTask();
 
-});
-
-// ===========================
-// PAUSE BUTTON
-// ===========================
-
+ });
+ 
 pauseBtn.addEventListener("click", () => {
 
     pauseTask();
 
-});
-
-// ===========================
-// CLOSE BUTTON
-// ===========================
-
+ });
+ 
 closeBtn.addEventListener("click", () => {
 
     closeTask();
@@ -274,7 +263,7 @@ closeBtn.addEventListener("click", () => {
 // CLICK OUTSIDE MODAL
 // ===========================
 
-window.addEventListener("click", event => {
+window.addEventListener("click", (event) => {
 
     if (event.target === modal) {
 
@@ -284,70 +273,21 @@ window.addEventListener("click", event => {
 
 });
 
-// ===========================
-// RESTORE RUNNING TASKS
-// ===========================
+// ===========================================
+// INITIALIZE TASK STATES
+// ===========================================
 
-function restoreRunningTasks() {
+for (const taskName in game.tasks) {
 
-    for (const taskName in game.tasks) {
+    if (typeof game.tasks[taskName].isRunning !== "boolean") {
 
-        const task = game.tasks[taskName];
+        game.tasks[taskName].isRunning = false;
 
-        if (!task.isRunning)
-            continue;
+    }
 
-        task.timer = setInterval(() => {
+    if (game.tasks[taskName].timer === undefined) {
 
-            task.seconds++;
-
-            const gainedXP =
-                xpRates[taskName] / 3600;
-
-            task.xp += gainedXP;
-
-            addXP(gainedXP);
-
-            game.stats.totalHours +=
-                1 / 3600;
-
-            let highestSeconds = 0;
-
-            for (const name in game.tasks) {
-
-                if (
-                    game.tasks[name].seconds >
-                    highestSeconds
-                ) {
-
-                    highestSeconds =
-                        game.tasks[name].seconds;
-
-                    game.stats.favoriteTask =
-                        name;
-
-                }
-
-            }
-
-            game.stats.bestTaskHours =
-                highestSeconds / 3600;
-
-            if (currentTask === taskName) {
-
-                updateTaskUI(taskName);
-
-            }
-
-            checkAchievements();
-
-            updateAchievementCounter();
-
-            refreshDashboard();
-
-            saveGame();
-
-        }, 1000);
+        game.tasks[taskName].timer = null;
 
     }
 
