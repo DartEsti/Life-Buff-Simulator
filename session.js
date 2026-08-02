@@ -1,6 +1,6 @@
 // ===========================================
 // LIFE BUFF SIMULATOR
-// Version 1.0
+// Version 2.0
 // session.js
 // Session System
 // ===========================================
@@ -28,7 +28,7 @@ const clockOutBtn =
 let isClockedIn = false;
 
 // ===========================================
-// GET CURRENT TIME
+// CURRENT TIME
 // ===========================================
 
 function getCurrentTime() {
@@ -60,11 +60,11 @@ function clockIn() {
 
     clockOutBtn.disabled = false;
 
-    console.log("🟢 Clocked In");
+    saveGame();
 
     refreshDashboard();
 
-    saveGame();
+    console.log("🟢 Clocked In");
 
 }
 
@@ -76,9 +76,13 @@ function clockOut() {
 
     if (!isClockedIn) return;
 
-    // Stop running task automatically
+    // Stop every running task
 
-    pauseTask();
+    for (const taskName in game.tasks) {
+
+        pauseTaskTimer(taskName);
+
+    }
 
     isClockedIn = false;
 
@@ -89,11 +93,11 @@ function clockOut() {
 
     clockOutBtn.disabled = true;
 
-    console.log("🔴 Clocked Out");
+    saveGame();
 
     refreshDashboard();
 
-    saveGame();
+    console.log("🔴 Clocked Out");
 
 }
 
@@ -129,9 +133,21 @@ function getSessionStatus() {
 // BUTTON EVENTS
 // ===========================================
 
-clockInBtn.addEventListener("click", clockIn);
+clockInBtn.addEventListener(
 
-clockOutBtn.addEventListener("click", clockOut);
+    "click",
+
+    clockIn
+
+);
+
+clockOutBtn.addEventListener(
+
+    "click",
+
+    clockOut
+
+);
 
 // ===========================================
 // END OF FILE

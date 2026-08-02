@@ -5,9 +5,11 @@
 // User Interface
 // ===========================================
 
-// ===========================
-// TASK MODAL
-// ===========================
+// ===========================================
+// DOM ELEMENTS
+// ===========================================
+
+// ---------- Task Modal ----------
 
 const modal =
     document.getElementById("taskModal");
@@ -27,9 +29,7 @@ const timerDisplay =
 const xpRateDisplay =
     document.getElementById("xpRate");
 
-// ===========================
-// MAIN DASHBOARD
-// ===========================
+// ---------- Dashboard ----------
 
 const levelDisplay =
     document.getElementById("levelDisplay");
@@ -46,9 +46,7 @@ const workedHoursDisplay =
 const freeTimeDisplay =
     document.getElementById("freeTime");
 
-// ===========================
-// STATISTICS DASHBOARD
-// ===========================
+// ---------- Statistics ----------
 
 const statsLifetimeXP =
     document.getElementById("statsLifetimeXP");
@@ -68,19 +66,17 @@ const statsCurrentStreak =
 const statsDaysPlayed =
     document.getElementById("statsDaysPlayed");
 
-// ===========================
-// PLAYER PROFILE
-// ===========================
+// ---------- Player Profile ----------
 
 const changeNameBtn =
     document.getElementById("changeNameBtn");
- 
+
 const playerAvatar =
     document.getElementById("playerAvatar");
 
 const playerName =
     document.getElementById("playerName");
- 
+
 const playerRank =
     document.getElementById("playerRank");
 
@@ -96,38 +92,9 @@ const profileXPFill =
 const profileXPProgress =
     document.getElementById("profileXPProgress");
 
-// ===========================
-// CHECK IMPORTANT ELEMENTS
-// ===========================
-
-const requiredElements = [
-
-    playerAvatar,
-    playerName,
-    playerRank,
-    profileLevel,
-    profileXP,
-    profileXPFill,
-    profileXPProgress
-
-];
-
-requiredElements.forEach(element => {
-
-    if (!element) {
-
-        console.error(
-            "Missing UI element.",
-            element
-        );
-
-    }
-
-});
-
-// ===========================
+// ===========================================
 // UPDATE LEVEL UI
-// ===========================
+// ===========================================
 
 function updateLevelUI() {
 
@@ -138,14 +105,95 @@ function updateLevelUI() {
         `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
 
     xpFill.style.width =
-        `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
- 
+         `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
 
 }
 
-// ===========================
+// ===========================================
+// UPDATE TASK UI
+// ===========================================
+
+ function updateTaskUI(taskName) {
+
+    const task = game.tasks[taskName];
+
+    if (!task) return;
+
+    taskTitle.textContent =
+        taskName;
+
+    taskXP.textContent =
+        `${task.xp.toFixed(2)} XP`;
+
+    taskHours.textContent =
+        `${(task.seconds / 3600).toFixed(2)} Hours`;
+
+    timerDisplay.textContent =
+        formatTime(task.seconds);
+
+    xpRateDisplay.textContent =
+        `${xpRates[taskName]} XP / Hour`;
+
+}
+
+// ===========================================
+// UPDATE PRODUCTIVITY
+// ===========================================
+
+function updateProductivity() {
+
+    let totalSeconds = 0;
+
+    for (const taskName in game.tasks) {
+
+        totalSeconds +=
+            game.tasks[taskName].seconds;
+
+    }
+
+    const totalHours =
+        totalSeconds / 3600;
+
+    workedHoursDisplay.textContent =
+        `${totalHours.toFixed(2)} Hours`;
+
+    const freeHours =
+        Math.max(0, 16 - totalHours);
+
+    freeTimeDisplay.textContent =
+        `${freeHours.toFixed(2)} Hours`;
+
+} 
+
+// ===========================================
+// UPDATE STATISTICS UI
+// ===========================================
+
+function updateStatisticsUI() {
+
+    statsLifetimeXP.textContent =
+        `${Math.floor(game.totalLifetimeXP)} XP`;
+
+    statsTotalHours.textContent =
+        `${game.stats.totalHours.toFixed(2)} Hours`;
+
+    statsTasksCompleted.textContent =
+        game.stats.totalTasksCompleted;
+
+    statsFavoriteTask.textContent =
+        game.stats.favoriteTask;
+
+    statsCurrentStreak.textContent =
+        `${game.stats.currentStreak} Days`;
+
+    statsDaysPlayed.textContent =
+        game.stats.daysPlayed;
+
+}
+
+// ===========================================
 // UPDATE PLAYER PROFILE
-// ===========================
+// ===========================================
 
 function updatePlayerProfile() {
 
@@ -180,9 +228,9 @@ function updatePlayerProfile() {
 
     game.player.title = rank;
 
-    // ===========================
+    // =======================================
     // AVATAR UNLOCKS
-    // ===========================
+    // =======================================
 
     if (game.level >= 150)
         game.player.avatar = "👑";
@@ -211,158 +259,71 @@ function updatePlayerProfile() {
     else
         game.player.avatar = "😀";
 
-    playerAvatar.textContent =
-        game.player.avatar;
+    // =======================================
+    // UPDATE PROFILE
+    // =======================================
 
-    playerName.textContent =
-        game.player.name;
+    if (playerAvatar)
+        playerAvatar.textContent =
+            game.player.avatar;
 
-    playerRank.textContent =
-        game.player.title;
+    if (playerName)
+        playerName.textContent =
+            game.player.name;
 
-    profileLevel.textContent =
-        `Level ${game.level}`;
+    if (playerRank)
+        playerRank.textContent =
+            game.player.title;
 
-    profileXP.textContent =
-        `${Math.floor(game.totalLifetimeXP)} XP`;
+    if (profileLevel)
+        profileLevel.textContent =
+            `Level ${game.level}`;
 
-    profileXPFill.style.width =
-        `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
+    if (profileXP)
+        profileXP.textContent =
+            `${Math.floor(game.totalLifetimeXP)} XP`;
 
-    profileXPProgress.textContent =
-        `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
+    if (profileXPFill)
+        profileXPFill.style.width =
+            `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
 
-} 
-
-// ===========================
-// UPDATE TASK UI
-// ===========================
-
-function updateTaskUI(taskName) {
-
-    if (!taskName) return;
-
-    const task = game.tasks[taskName];
-
-    if (!task) return;
-
-    taskTitle.textContent =
-        taskName;
-
-    taskXP.textContent =
-        `${task.xp.toFixed(2)} XP`;
-
-    taskHours.textContent =
-        `${(task.seconds / 3600).toFixed(2)} Hours`;
-
-    timerDisplay.textContent =
-        formatTime(task.seconds);
-
-    xpRateDisplay.textContent =
-        `${xpRates[taskName]} XP / Hour`;
+    if (profileXPProgress)
+        profileXPProgress.textContent =
+            `${Math.floor(game.currentXP)} / ${XP_PER_LEVEL} XP`;
 
 }
 
-// ===========================
-// UPDATE PRODUCTIVITY
-// ===========================
-
-function updateProductivity() {
-
-    let totalSeconds = 0;
-
-    for (const taskName in game.tasks) {
-
-        totalSeconds +=
-            game.tasks[taskName].seconds;
-
-    }
-
-    const totalHours =
-        totalSeconds / 3600;
-
-    workedHoursDisplay.textContent =
-        `${totalHours.toFixed(2)} Hours`;
-
-    const freeHours =
-        Math.max(0, 16 - totalHours);
-
-    freeTimeDisplay.textContent =
-        `${freeHours.toFixed(2)} Hours`;
-
-}
-
-// ===========================
-// UPDATE STATISTICS
-// ===========================
-
-function updateStatisticsUI() {
-
-    statsLifetimeXP.textContent =
-        `${Math.floor(game.totalLifetimeXP)} XP`;
-
-    statsTotalHours.textContent =
-        `${game.stats.totalHours.toFixed(2)} Hours`;
-
-    statsTasksCompleted.textContent =
-        game.stats.totalTasksCompleted;
-
-    statsFavoriteTask.textContent =
-        game.stats.favoriteTask;
-
-    statsCurrentStreak.textContent =
-        `${game.stats.currentStreak} Days`;
-
-    statsDaysPlayed.textContent =
-        game.stats.daysPlayed;
-
-}
-
-// ===========================
+// ===========================================
 // CHANGE PLAYER NAME
-// ===========================
+// ===========================================
 
 function changePlayerName() {
 
     const newName = prompt(
-         "Enter your new player name:",
-         game.player.name
+
+        "Enter your new player name:",
+
+        game.player.name
+
     );
 
-    if (newName === null)
-        return;
+    if (!newName) return;
 
-    const trimmedName =
-        newName.trim();
+    const trimmedName = newName.trim();
 
-    if (trimmedName.length === 0)
-        return;
+    if (trimmedName.length === 0) return;
 
-    game.player.name =
-        trimmedName;
+    game.player.name = trimmedName;
 
     updatePlayerProfile();
 
     saveGame();
 
-}
-
-// ===========================
-// TASK REFRESH
-// ===========================
-
-function refreshCurrentTask() {
-
-    if (currentTask === null)
-        return;
-
-    updateTaskUI(currentTask);
-
 } 
 
-// ===========================
+// ===========================================
 // OPEN MODAL
-// ===========================
+// ===========================================
 
 function showTaskModal() {
 
@@ -370,19 +331,31 @@ function showTaskModal() {
 
 }
 
-// ===========================
+// ===========================================
 // CLOSE MODAL
-// ===========================
+// ===========================================
 
 function hideTaskModal() {
 
     modal.style.display = "none";
- 
-} 
 
-// ===========================
+}
+
+// ===========================================
+// REFRESH CURRENT TASK
+// ===========================================
+
+function refreshCurrentTask() {
+
+    if (currentTask === null) return;
+
+    updateTaskUI(currentTask);
+
+}
+
+// ===========================================
 // REFRESH DASHBOARD
-// ===========================
+// ===========================================
 
 function refreshDashboard() {
 
@@ -396,42 +369,101 @@ function refreshDashboard() {
 
     refreshCurrentTask();
 
+    updateAchievementCounter();
+
 }
 
-// ===========================
+// ===========================================
+// LIVE UI REFRESH
+// ===========================================
+
+// Updates the currently opened task every second.
+// This DOES NOT control the timers.
+// It only refreshes the displayed values.
+
+setInterval(() => {
+
+    refreshCurrentTask();
+
+}, 1000);
+
+// Refresh dashboard every second so XP,
+// productivity and statistics stay updated.
+
+setInterval(() => {
+
+    refreshDashboard();
+
+}, 1000);
+
+// ===========================================
 // BUTTON EVENTS
-// ===========================
+// ===========================================
+
+if (changeNameBtn) {
+
+    changeNameBtn.addEventListener("click", () => {
+
+        changePlayerName();
+
+    });
+
+}
+
+// ===========================================
+// INITIALIZE USER INTERFACE
+// ===========================================
+
+function initializeUI() {
+
+    updateLevelUI();
+
+    updateProductivity();
+
+    updateStatisticsUI();
+
+    updatePlayerProfile();
+
+    refreshCurrentTask();
+
+}
+
+// ===========================================
+// LIVE TASK DISPLAY
+// ===========================================
+
+// Only refresh the currently opened task modal.
+// Running task timers already refresh the dashboard.
+
+setInterval(() => {
+
+    refreshCurrentTask();
+
+}, 1000);
+
+// ===========================================
+// BUTTON EVENTS
+// ===========================================
 
 if (changeNameBtn) {
 
     changeNameBtn.addEventListener(
+
         "click",
+
         changePlayerName
+
     );
 
 }
 
-// ===========================
-// CLOSE MODAL BUTTON
-// ===========================
+// ===========================================
+// WINDOW EVENTS
+// ===========================================
 
-const closeButton =
-    document.querySelector(".close");
+// Close modal when clicking outside it
 
-if (closeButton) {
-
-    closeButton.addEventListener(
-        "click",
-        hideTaskModal
-    );
-
-}
-
-// ===========================
-// CLICK OUTSIDE MODAL
-// ===========================
-
-window.addEventListener("click", event => {
+window.addEventListener("click", (event) => {
 
     if (event.target === modal) {
 
@@ -441,19 +473,13 @@ window.addEventListener("click", event => {
 
 });
 
-// ===========================
-// LIVE UI REFRESH
-// ===========================
+// ===========================================
+// STARTUP
+// ===========================================
 
-// Refresh the currently opened task every second.
-// This keeps the timer updating while the modal
-// stays open, even when multiple tasks are running.
+// Build the UI after everything has loaded.
 
-setInterval(() => {
-
-    refreshCurrentTask();
-
-}, 1000);
+initializeUI();
 
 // ===========================================
 // END OF FILE
