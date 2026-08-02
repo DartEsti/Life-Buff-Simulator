@@ -54,9 +54,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // =======================================
     // LIVE TASK TIMER REFRESH
     // =======================================
-
-    setInterval(refreshCurrentTask, 1000);
-
+ 
     console.log("✅ Life Buff Simulator v0.9 Loaded Successfully.");
 
 });

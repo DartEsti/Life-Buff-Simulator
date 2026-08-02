@@ -166,9 +166,7 @@ function addXP(amount) {
     game.currentXP += amount;
 
     game.totalLifetimeXP += amount;
-
-    showXPPopup(amount);
-
+ 
     while (
 
         game.currentXP >= XP_PER_LEVEL &&
@@ -200,9 +198,7 @@ function addXP(amount) {
     }
 
     refreshDashboard();
-
-    saveGame();
-
+ 
 }
 
 // ===========================================
@@ -243,21 +239,9 @@ function formatTime(totalSeconds) {
 // XP POPUP
 // ===========================================
 
-function showXPPopup(amount) {
+function showXPPopup() {
 
-    const popup = document.createElement("div");
-
-    popup.className = "xp-popup";
-
-    popup.textContent = `+${amount.toFixed(2)} XP`;
-
-    document.body.appendChild(popup);
-
-    setTimeout(() => {
-
-        popup.remove();
-
-    }, 1200);
+    return;
 
 }
 

@@ -220,14 +220,11 @@ function updatePlayerProfile() {
     playerName.textContent =
         game.player.name;
 
-    playerRank.textContent =
-        game.player.title;
+    playerTitle.textContent = game.player.title;
 
-    profileLevel.textContent =
-        `Level ${game.level}`;
+    playerLevel.textContent = `Level ${game.level}`;
 
-    profileXP.textContent =
-        `${Math.floor(game.totalLifetimeXP)} XP`;
+    playerXP.textContent = `${Math.floor(game.totalLifetimeXP)} XP`;
 
     profileXPFill.style.width =
         `${(game.currentXP / XP_PER_LEVEL) * 100}%`;
